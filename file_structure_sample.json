@@ -1,21 +1,29 @@
 {
     "name": "rootName",
     "faces": [
-        {
-            "vertices": [],
-            "colors": []
-        },
-        {
-            "vertices": [],
-            "colors": []
-        }
+        {"vertices":[[0.2,-0.25,-0.1,1],
+                [0.2,-0.3,-0.1,1],
+                [-0.2,-0.3,-0.1,1],
+                [-0.2,-0.25,-0.1,1]],
+        "colors":   [[1,0,0,1],
+                    [1,0,0,1],
+                    [1,0,0,1],
+                    [1,0,0,1]]},
+        {"vertices":[[0.2,-0.25,-0.05,1],
+                    [-0.2,-0.25,-0.05,1],
+                    [-0.2,-0.3,-0.05,1],
+                    [0.2,-0.3,-0.05,1]],
+        "colors":   [[1,0,0,1],
+                    [1,0,0,1],
+                    [1,0,0,1],
+                    [1,0,0,1]]}
     ],
-    "object_translate": [0, 0, 0],
-    "object_rotate": [0, 0, 0],
-    "object_scale": [1, 1, 1],
-    "pivot_translate": [0, 0, 0],
-    "pivot_rotate": [0, 0, 0],
-    "pivot_scale": [1, 1, 1],
+    "objectTranslate": [0, 0, 0],
+    "objectRotate": [0, 0, 0],
+    "objectScale": [1, 1, 1],
+    "pivotTranslate": [0, 0, 0],
+    "pivotRotate": [0, 0, 0],
+    "pivotScale": [1, 1, 1],
     "texture": "",
     "animation": [
         {
@@ -31,23 +39,114 @@
     ],
     "children": [
         {
-            "name": "rootName",
+            "name": "childName1",
             "faces": [
+                {"vertices":[[0.2,-0.25,-0.1,1],
+                            [0.2,-0.25,-0.05,1],
+                            [0.2,-0.3,-0.05,1],
+                            [0.2,-0.3,-0.1,1]],
+                "colors":   [[1,0,0,1],
+                            [1,0,0,1],
+                            [1,0,0,1],
+                            [1,0,0,1]]},
+                {"vertices":[[-0.2,-0.25,-0.1,1],
+                            [-0.2,-0.3,-0.1,1],
+                            [-0.2,-0.3,-0.05,1],
+                            [-0.2,-0.25,-0.05,1]],
+                "colors":   [[1,0,0,1],
+                            [1,0,0,1],
+                            [1,0,0,1],
+                            [1,0,0,1]]}
+            ],
+            "objectTranslate": [0, 0, 0],
+            "objectRotate": [0, 0, 0],
+            "objectScale": [1, 1, 1],
+            "pivotTranslate": [0, 0, 0],
+            "pivotRotate": [0, 0, 0],
+            "pivotScale": [1, 1, 1],
+            "texture": "",
+            "animation": [
                 {
-                    "vertices": [],
-                    "colors": []
+                    "translate": [0, 0, 0],
+                    "rotate": [0, 0, 0],
+                    "scale": [1, 1, 1]
                 },
                 {
-                    "vertices": [],
-                    "colors": []
+                    "translate": [0, 0, 0],
+                    "rotate": [0, 0, 0],
+                    "scale": [1, 1, 1]
                 }
             ],
-            "object_translate": [0, 0, 0],
-            "object_rotate": [0, 0, 0],
-            "object_scale": [1, 1, 1],
-            "pivot_translate": [0, 0, 0],
-            "pivot_rotate": [0, 0, 0],
-            "pivot_scale": [1, 1, 1],
+            "children": [
+                {
+                    "name": "grandChildName1",
+                    "faces": [
+                        {"vertices":[[0.2,-0.3,-0.1,1],
+                                    [0.2,-0.3,-0.05,1],
+                                    [-0.2,-0.3,-0.05,1],
+                                    [-0.2,-0.3,-0.1,1]],
+                        "colors":   [[1,0,0,1],
+                                    [1,0,0,1],
+                                    [1,0,0,1],
+                                    [1,0,0,1]]},
+                        {"vertices":[[0.2,-0.25,-0.1,1],
+                                    [-0.2,-0.25,-0.1,1],
+                                    [-0.2,-0.25,-0.05,1],
+                                    [0.2,-0.25,-0.05,1]],
+                        "colors":   [[1,0,0,1],
+                                    [1,0,0,1],
+                                    [1,0,0,1],
+                                    [1,0,0,1]]}
+                    ],
+                    "objectTranslate": [0, 0, 0],
+                    "objectRotate": [0, 0, 0],
+                    "objectScale": [1, 1, 1],
+                    "pivotTranslate": [0, 0, 0],
+                    "pivotRotate": [0, 0, 0],
+                    "pivotScale": [1, 1, 1],
+                    "texture": "",
+                    "animation": [
+                        {
+                            "translate": [0, 0, 0],
+                            "rotate": [0, 0, 0],
+                            "scale": [1, 1, 1]
+                        },
+                        {
+                            "translate": [0, 0, 0],
+                            "rotate": [0, 0, 0],
+                            "scale": [1, 1, 1]
+                        }
+                    ],
+                    "children": []
+                }
+            ]
+        },
+        {
+            "name": "childName2",
+            "faces": [
+                {"vertices":[[0.2,-0.25,0.25,1],
+                            [0.2,-0.3,0.25,1],
+                            [-0.2,-0.3,0.25,1],
+                            [-0.2,-0.25,0.25,1]],
+                "colors":   [[1,0,0,1],
+                            [1,0,0,1],
+                            [1,0,0,1],
+                            [1,0,0,1]]},
+                {"vertices":[[0.2,-0.25,0.3,1],
+                            [-0.2,-0.25,0.3,1],
+                            [-0.2,-0.3,0.3,1],
+                            [0.2,-0.3,0.3,1]],
+                "colors":   [[1,0,0,1],
+                            [1,0,0,1],
+                            [1,0,0,1],
+                            [1,0,0,1]]}
+            ],
+            "objectTranslate": [0, 0, 0],
+            "objectRotate": [0, 0, 0],
+            "objectScale": [1, 1, 1],
+            "pivotTranslate": [0, 0, 0],
+            "pivotRotate": [0, 0, 0],
+            "pivotScale": [1, 1, 1],
             "texture": "",
             "animation": [
                 {

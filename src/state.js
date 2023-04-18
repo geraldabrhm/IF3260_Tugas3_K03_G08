@@ -8,7 +8,7 @@ function defaultGlobalState() {
     }
 }
 
-function defaultShapeState() {
+function defaultTransformationState() {
     return {
         translation: [0, 0, 0],
         rotation: [0, 0, 0],
@@ -16,12 +16,14 @@ function defaultShapeState() {
     };
 }
 
+var rootShapeNode = null;
+var selectedShapeNode = null;
+
 var globalState = defaultGlobalState();
-const shapes = [];
-const transformationStates = [];
-const transformedShapes = [];
-var currentShapeIndex = 0;
+var ssGlobalState = defaultGlobalState();
+
 var cameraMatrix = null;
+
 
 
 

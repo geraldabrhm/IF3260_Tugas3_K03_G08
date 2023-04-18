@@ -1,5 +1,4 @@
-const selectedModel = document.getElementById("selectedModel");
-const selectedProjection = document.getElementById("selectedProjection");
+// Model Control
 const rotateX = document.getElementById("rotateX");
 const rotateY = document.getElementById("rotateY");
 const rotateZ = document.getElementById("rotateZ");
@@ -9,56 +8,174 @@ const translateZ = document.getElementById("translateZ");
 const scaleX = document.getElementById("scaleX");
 const scaleY = document.getElementById("scaleY");
 const scaleZ = document.getElementById("scaleZ");
+
+// Subtree Control
+const rotateXsubtree = document.getElementById("rotateXsubtree");
+const rotateYsubtree = document.getElementById("rotateYsubtree");
+const rotateZsubtree = document.getElementById("rotateZsubtree");
+const translateXsubtree = document.getElementById("translateXsubtree");
+const translateYsubtree = document.getElementById("translateYsubtree");
+const translateZsubtree = document.getElementById("translateZsubtree");
+const scaleXsubtree = document.getElementById("scaleXsubtree");
+const scaleYsubtree = document.getElementById("scaleYsubtree");
+const scaleZsubtree = document.getElementById("scaleZsubtree");
+
+// Single Control
+const rotateXsingle = document.getElementById("rotateXsingle");
+const rotateYsingle = document.getElementById("rotateYsingle");
+const rotateZsingle = document.getElementById("rotateZsingle");
+const translateXsingle = document.getElementById("translateXsingle");
+const translateYsingle = document.getElementById("translateYsingle");
+const translateZsingle = document.getElementById("translateZsingle");
+const scaleXsingle = document.getElementById("scaleXsingle");
+const scaleYsingle = document.getElementById("scaleYsingle");
+const scaleZsingle = document.getElementById("scaleZsingle");
+
+// Model View
+const selectedProjection = document.getElementById("selectedProjection");
 const cameraAngle = document.getElementById("cameraAngle");
 const cameraRadius = document.getElementById("cameraRadius");
 const lightPositionX = document.getElementById("lightPositionX");
 const lightPositionY = document.getElementById("lightPositionY");
 const lightPositionZ = document.getElementById("lightPositionZ");
 const lightCheckbox = document.getElementById("lightCheckbox");
+const resetViewbtn = document.getElementById("reset-view-btn");
+
+// Single / Subtree View
+const selectedProjectionSs = document.getElementById("selectedProjectionSs");
+const selectedViewSs = document.getElementById("selectedViewSs");
+const cameraAngleSs = document.getElementById("cameraAngleSs");
+const cameraRadiusSs = document.getElementById("cameraRadiusSs");
+const lightPositionXSs = document.getElementById("lightPositionXSs");
+const lightPositionYSs = document.getElementById("lightPositionYSs");
+const lightPositionZSs = document.getElementById("lightPositionZSs");
+const lightCheckboxSs = document.getElementById("lightCheckboxSs");
+const resetViewbtnSs = document.getElementById("reset-view-btnSs");
 
 window.onload = function main() {
-
+    // Model Control
     rotateX.addEventListener("input", function() {
-        transformationStates[currentShapeIndex].rotation[0] = rotateX.value;
+        rootShapeNode.pivotRotate[0] = rotateX.value;
         refresh();
     });
     rotateY.addEventListener("input", function() {
-        transformationStates[currentShapeIndex].rotation[1] = rotateY.value;
+        rootShapeNode.pivotRotate[1] = rotateY.value;
         refresh();
     });
     rotateZ.addEventListener("input", function() {
-        transformationStates[currentShapeIndex].rotation[2] = rotateZ.value;
+        rootShapeNode.pivotRotate[2] = rotateZ.value;
         refresh();
     });
 
     translateX.addEventListener("input", e => {
-        transformationStates[currentShapeIndex].translation[0] = translateX.value;
+        rootShapeNode.pivotTranslate[0] = translateX.value;
         refresh();
     });
     translateY.addEventListener("input", e => {
-        transformationStates[currentShapeIndex].translation[1] = translateY.value;
+        rootShapeNode.pivotTranslate[1] = translateY.value;
         refresh();
     });
     translateZ.addEventListener("input", e => {
-        transformationStates[currentShapeIndex].translation[2] = translateZ.value;
+        rootShapeNode.pivotTranslate[2] = translateZ.value;
         refresh();
     });
 
     scaleX.addEventListener("input", e => {
-        transformationStates[currentShapeIndex].scale[0] = scaleX.value;
+        rootShapeNode.pivotScale[0] = scaleX.value;
         refresh();
     });
     scaleY.addEventListener("input", e => {
-        transformationStates[currentShapeIndex].scale[1] = scaleY.value;
+        rootShapeNode.pivotScale[1] = scaleY.value;
         refresh();
     });
     scaleZ.addEventListener("input", e => {
-        transformationStates[currentShapeIndex].scale[2] = scaleZ.value;
+        rootShapeNode.pivotScale[2] = scaleZ.value;
         refresh();
     });
 
+    // Subtree Control
+    rotateXsubtree.addEventListener("input", function() {
+        selectedShapeNode.pivotRotate[0] = rotateXsubtree.value;
+        refresh();
+    });
+    rotateYsubtree.addEventListener("input", function() {
+        selectedShapeNode.pivotRotate[1] = rotateYsubtree.value;
+        refresh();
+    });
+    rotateZsubtree.addEventListener("input", function() {
+        selectedShapeNode.pivotRotate[2] = rotateZsubtree.value;
+        refresh();
+    });
+
+    translateXsubtree.addEventListener("input", e => {
+        selectedShapeNode.pivotTranslate[0] = translateXsubtree.value;
+        refresh();
+    });
+    translateYsubtree.addEventListener("input", e => {
+        selectedShapeNode.pivotTranslate[1] = translateYsubtree.value;
+        refresh();
+    });
+    translateZsubtree.addEventListener("input", e => {
+        selectedShapeNode.pivotTranslate[2] = translateZsubtree.value;
+        refresh();
+    });
+
+    scaleXsubtree.addEventListener("input", e => {
+        selectedShapeNode.pivotScale[0] = scaleXsubtree.value;
+        refresh();
+    });
+    scaleYsubtree.addEventListener("input", e => {
+        selectedShapeNode.pivotScale[1] = scaleYsubtree.value;
+        refresh();
+    });
+    scaleZsubtree.addEventListener("input", e => {
+        selectedShapeNode.pivotScale[2] = scaleZsubtree.value;
+        refresh();
+    });
+
+    // Single Control
+    rotateXsingle.addEventListener("input", function() {
+        selectedShapeNode.objectRotate[0] = rotateXsingle.value;
+        refresh();
+    });
+    rotateYsingle.addEventListener("input", function() {
+        selectedShapeNode.objectRotate[1] = rotateYsingle.value;
+        refresh();
+    });
+    rotateZsingle.addEventListener("input", function() {
+        selectedShapeNode.objectRotate[2] = rotateZsingle.value;
+        refresh();
+    });
+
+    translateXsingle.addEventListener("input", e => {
+        selectedShapeNode.objectTranslate[0] = translateXsingle.value;
+        refresh();
+    });
+    translateYsingle.addEventListener("input", e => {
+        selectedShapeNode.objectTranslate[1] = translateYsingle.value;
+        refresh();
+    });
+    translateZsingle.addEventListener("input", e => {
+        selectedShapeNode.objectTranslate[2] = translateZsingle.value;
+        refresh();
+    });
+
+    scaleXsingle.addEventListener("input", e => {
+        selectedShapeNode.objectScale[0] = scaleXsingle.value;
+        refresh();
+    });
+    scaleYsingle.addEventListener("input", e => {
+        selectedShapeNode.objectScale[1] = scaleYsingle.value;
+        refresh();
+    });
+    scaleZsingle.addEventListener("input", e => {
+        selectedShapeNode.objectScale[2] = scaleZsingle.value;
+        refresh();
+    });
+
+    // Model View
     cameraAngle.addEventListener("input",  () => {
-        globalState.cameraRotation = cameraAngle.value;
+        globalState.cameraRotate = cameraAngle.value;
         refresh();
     });
     
@@ -98,57 +215,75 @@ window.onload = function main() {
         resetView();
     });
 
-    const clearCanvasbtn = document.getElementById("clear-canvas-btn");
-    clearCanvasbtn.addEventListener("click", function() {
-        clearCanvas();
+    // Single / Subtree View
+    cameraAngleSs.addEventListener("input",  () => {
+        ssGlobalState.cameraRotate = cameraAngleSs.value;
+        refresh();
+    });
+    
+    cameraRadiusSs.addEventListener("input", () => {
+        ssGlobalState.cameraRadius = cameraRadiusSs.value;
+        refresh();
     });
 
+    lightPositionXSs.addEventListener("input", () => {
+        ssGlobalState.lightPosition[0] = lightPositionXSs.value;
+        refresh();
+    });
+
+    lightPositionYSs.addEventListener("input", () => {
+        ssGlobalState.lightPosition[1] = lightPositionYSs.value;
+        refresh();
+    });
+
+    lightPositionZSs.addEventListener("input", () => {
+        ssGlobalState.lightPosition[2] = lightPositionZSs.value;
+        refresh();
+    });
+
+    lightCheckboxSs.addEventListener("change", () => {
+        if (lightCheckboxSs.checked) {
+            gl.clearColor(0.0, 0.0, 0.0, 0.8);
+            ssGlobalState.isLight = 1;
+        } else {       
+            gl.clearColor(0.75, 0.85, 0.8, 1.0);
+            ssGlobalState.isLight = 0;
+        }
+        refresh();
+    });
+
+    resetViewbtnSs.addEventListener("click", function() {
+        resetView();
+    });
+
+    // Export
     const exportbtn = document.getElementById("export-btn");
     exportbtn.addEventListener("click", function() {
         exportShape();
     });
 
-    const exportCurrentbtn = document.getElementById("export-current-btn");
-    exportCurrentbtn.addEventListener("click", function() {
-        exportCurrentShape();
-    });
-
+    // Import
     const importbtn = document.getElementById("import-btn");
     importbtn.addEventListener("click", function() {
-        importShape(shapes);
+        importShape();
     });
 }
 
 function refresh() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    for (let i = 0; i < shapes.length; i++) {
-        transformedShapes[i] = shapes[i].generateTransformedShape(transformationStates[i]);
-        transformedShapes[i].draw();
-    }
+    rootShapeNode.draw();
 }
 
 function exportShape() {
-    const data = JSON.stringify(transformedShapes);
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
+    // const data = JSON.stringify(transformedShapes);
+    // const blob = new Blob([data], { type: "application/json" });
+    // const url = URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "test.json";
-    document.body.appendChild(link);
-    link.click();
-}
-
-function exportCurrentShape() {
-    const data = JSON.stringify([transformedShapes[currentShapeIndex]]);
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "test.json";
-    document.body.appendChild(link);
-    link.click();
+    // const link = document.createElement("a");
+    // link.href = url;
+    // link.download = "test.json";
+    // document.body.appendChild(link);
+    // link.click();
 }
 
 function importShape() {
@@ -163,58 +298,58 @@ function importShape() {
     reader.onload = (evt) => {
         const shapeJSONstr = evt.target.result;
         const shapeJSON = JSON.parse(shapeJSONstr);
-        for (const shape of shapeJSON) {
-            const newS = new Shape();
-            newS.load(shape.faces);
-            shapes.push(newS);
-            transformationStates.push(defaultShapeState());
-        }
-        setupModelSelector();
+
+        rootShapeNode = new ShapeNode(shapeJSON);
+
         setupModelControls();
         refresh();
+
+        document.getElementById("component-tree").appendChild(generateComponentTree(rootShapeNode));
     };
 }
 
-function setupModelSelector() {
-    let newValues = "";
+function generateComponentTree(shapeNode) {
+    let liElement = document.createElement("li")
 
-    for (let i = 0; i < shapes.length; i++) {
-        newValues += '<option value="' + i.toString() + '">Shape-' + i.toString() + '</option>';
+    let button = document.createElement("button");
+    button.innerHTML = shapeNode.name;
+    button.onclick = function() { setSelectedShapeNode(shapeNode) }
+
+    liElement.appendChild(button);
+
+    if (shapeNode.children.length > 0) {
+        let ulElement = document.createElement("ul");
+        for (let i = 0; i < shapeNode.children.length; i++) {
+            ulElement.appendChild(generateComponentTree(shapeNode.children[i]))
+        }
+        liElement.appendChild(ulElement);
     }
 
-    selectedModel.innerHTML = newValues;
-    selectedModel.value = shapes.length-1;
+    return liElement;
+}
+
+function setSelectedShapeNode(shapeNode) {
+    selectedShapeNode = shapeNode;
+
+    // Set subtree control
+
+    // Set single control
 }
 
 function setupModelControls() {
-    currentShapeIndex = selectedModel.value;
-    const allInput = document.querySelectorAll("#model-configuration > input");
+    const allInput = document.querySelectorAll("#model-control > input");
 
-    if (shapes.length > 0) {
-        Array.from(allInput, input => input.removeAttribute("disabled"));
+    Array.from(allInput, input => input.removeAttribute("disabled"));
 
-        rotateX.value = transformationStates[currentShapeIndex].rotation[0];
-        rotateY.value = transformationStates[currentShapeIndex].rotation[1];
-        rotateZ.value = transformationStates[currentShapeIndex].rotation[2];
-        translateX.value = transformationStates[currentShapeIndex].translation[0];
-        translateY.value = transformationStates[currentShapeIndex].translation[1];
-        translateZ.value = transformationStates[currentShapeIndex].translation[2];
-        scaleX.value = transformationStates[currentShapeIndex].scale[0];
-        scaleY.value = transformationStates[currentShapeIndex].scale[1];
-        scaleZ.value = transformationStates[currentShapeIndex].scale[2];
-    } else {
-        Array.from(allInput, input => input.setAttribute("disabled", ""));
-
-        rotateX.value = 0;
-        rotateY.value = 0;
-        rotateZ.value = 0;
-        translateX.value = 0;
-        translateY.value = 0;
-        translateZ.value = 0;
-        scaleX.value = 1;
-        scaleY.value = 1;
-        scaleZ.value = 1;
-    }
+    rotateX.value = rootShapeNode.pivotRotate[0];
+    rotateY.value = rootShapeNode.pivotRotate[1];
+    rotateZ.value = rootShapeNode.pivotRotate[2];
+    translateX.value = rootShapeNode.pivotTranslate[0];
+    translateY.value = rootShapeNode.pivotTranslate[1];
+    translateZ.value = rootShapeNode.pivotTranslate[2];
+    scaleX.value = rootShapeNode.pivotScale[0];
+    scaleY.value = rootShapeNode.pivotScale[1];
+    scaleZ.value = rootShapeNode.pivotScale[2];
 }
 
 function setProjectionType() {
@@ -224,7 +359,7 @@ function setProjectionType() {
 
 function setGlobalControls() {
     selectedProjection.value = globalState.projectionType;
-    cameraAngle.value = globalState.cameraRotation;
+    cameraAngle.value = globalState.cameraRotate;
     cameraRadius.value = globalState.cameraRadius;
     lightPositionX.value = globalState.lightPosition[0];
     lightPositionY.value = globalState.lightPosition[1];
@@ -251,6 +386,5 @@ function clearCanvas() {
     transformationStates.splice(0, transformationStates.length);
     currentShapeIndex = 0;
     setupModelControls();
-    setupModelSelector();
     refresh();
 }

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>3D Web Based CAD</title>
+    <title>3D WebGL Articulated Model</title>
 
     <!-- Utils -->
     <script src="utils/projection-util.js" defer></script>
@@ -16,11 +16,13 @@
 
     <!-- Utils -->
     <script src="utils/utils.js" defer></script>
+    <script src="utils/TransformationStack.js" defer></script>
 
     <!-- Models -->
+    <script src="Models/AnimationFrame.js" defer></script>
+    <script src="Models/ShapeNode.js" defer></script>
     <script src="Models/Shape.js" defer></script>
     <script src="Models/Face.js" defer></script>
-    <script src="Models/Vertex.js" defer></script>
 
     <!-- Program State -->
     <script src="state.js" defer></script>
@@ -42,21 +44,12 @@
       </canvas>
       <div class="container">
         <h2>Model Controller</h2>
-        <div id="model-configuration" class="config">
+        <div class="config">
             <label><b>Component Tree</b></label>
-            <ul>
-              <li>
-                <button>AAAA</button>
-                <ul>
-                  <li>
-                    <button>BBBB</button>
-                  </li>
-                </ul>
-              </li>
-            </ul>
+            <ul id="component-tree"></ul>
             <br><hr><br>
             <div class="column-container">
-              <div class="container">
+              <div class="container" id="model-control">
                 <label><b>Model Control</b></label>
                 <hr>
                 <label>Rotasi X-axis</label>
@@ -78,49 +71,49 @@
                 <label>Scale Z</label>
                 <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleZ" value="1" disabled>
               </div>
-              <div class="container">
+              <div class="container" id="subtree-control">
                 <label><b>Subtree Control</b></label>
                 <hr>
                 <label>Rotasi X-axis</label>
-                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateX" disabled>
+                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateXsubtree" disabled>
                 <label>Rotasi Y-axis</label>
-                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateY" disabled>
+                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateYsubtree" disabled>
                 <label>Rotasi Z-axis</label>
-                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateZ" disabled>
+                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateZsubtree" disabled>
                 <label>Translasi X</label>
-                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateX" disabled>
+                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateXsubtree" disabled>
                 <label>Translasi Y</label>
-                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateY" disabled>
+                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateYsubtree" disabled>
                 <label>Translasi Z</label>
-                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateZ" disabled>
+                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateZsubtree" disabled>
                 <label>Scale X</label>
-                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleX" value="1" disabled>
+                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleXsubtree" value="1" disabled>
                 <label>Scale Y</label>
-                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleY" value="1" disabled>
+                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleYsubtree" value="1" disabled>
                 <label>Scale Z</label>
-                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleZ" value="1" disabled>
+                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleZsubtree" value="1" disabled>
               </div>
-              <div class="container">
+              <div class="container" id="single-control">
                 <label><b>Single Control</b></label>
                 <hr>
                 <label>Rotasi X-axis</label>
-                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateX" disabled>
+                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateXsingle" disabled>
                 <label>Rotasi Y-axis</label>
-                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateY" disabled>
+                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateYsingle" disabled>
                 <label>Rotasi Z-axis</label>
-                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateZ" disabled>
+                <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateZsingle" disabled>
                 <label>Translasi X</label>
-                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateX" disabled>
+                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateXsingle" disabled>
                 <label>Translasi Y</label>
-                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateY" disabled>
+                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateYsingle" disabled>
                 <label>Translasi Z</label>
-                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateZ" disabled>
+                <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateZsingle" disabled>
                 <label>Scale X</label>
-                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleX" value="1" disabled>
+                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleXsingle" value="1" disabled>
                 <label>Scale Y</label>
-                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleY" value="1" disabled>
+                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleYsingle" value="1" disabled>
                 <label>Scale Z</label>
-                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleZ" value="1" disabled>
+                <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleZsingle" value="1" disabled>
               </div>
             </div>
         </div>
@@ -160,36 +153,36 @@
               <label><b>Single / Subtree View</b></label>
               <hr>
               <label>Select projection type:</label>
-              <select id="selectedProjection" name="selectedModel" onchange="setProjectionType()">
+              <select id="selectedProjectionSs" name="selectedModel" onchange="setProjectionType()">
                 <option value="perspective">Perspective</option>
                 <option value="orthographic">Orthographic</option>
                 <option value="oblique">Oblique</option>
               </select>
               <br>
               <label>Select view type:</label>
-              <select id="selectedView" name="selectedModel" onchange="setProjectionType()">
+              <select id="selectedViewSs" name="selectedModel" onchange="setProjectionType()">
                 <option value="single">Single</option>
                 <option value="subtree">Subtree</option>
               </select>
               <br><br>
 
               <label>Camera Angle</label>
-              <input type="range" min="-180" step="1" max="180" class="slider" id="cameraAngle" value="0">
+              <input type="range" min="-180" step="1" max="180" class="slider" id="cameraAngleSs" value="0">
               <label>Camera Radius</label>
-              <input type="range" min="0" step="0.0001" max="2" class="slider" id="cameraRadius" value="0">
+              <input type="range" min="0" step="0.0001" max="2" class="slider" id="cameraRadiusSs" value="0">
               <br>
 
               <label>Light Position X</label>
-              <input type="range" min="-1" step="0.0001" max="1" class="slider" id="lightPositionX" value="1">
+              <input type="range" min="-1" step="0.0001" max="1" class="slider" id="lightPositionXSs" value="1">
               <label>Light Position Y</label>
-              <input type="range" min="-1" step="0.0001" max="1" class="slider" id="lightPositionY" value="1">
+              <input type="range" min="-1" step="0.0001" max="1" class="slider" id="lightPositionYSs" value="1">
               <label>Light Position Z</label>
-              <input type="range" min="-1" step="0.0001" max="1" class="slider" id="lightPositionZ" value="-1">
+              <input type="range" min="-1" step="0.0001" max="1" class="slider" id="lightPositionZSs" value="-1">
               <br>
-              <input type="checkbox" id="lightCheckbox" name="isLight" value="Yes">
+              <input type="checkbox" id="lightCheckboxSs" name="isLight" value="Yes">
               <label for="isLight"> Light Shader</label><br><br>
 
-              <button id="reset-view-btn">Reset view</button>
+              <button id="reset-view-btnSs">Reset view</button>
             </div>
           </div>
         </div>
