@@ -11,9 +11,11 @@
         }
     ],
     "object_translate": [0, 0, 0],
+    "object_rotate": [0, 0, 0],
     "object_scale": [1, 1, 1],
     "pivot_translate": [0, 0, 0],
     "pivot_rotate": [0, 0, 0],
+    "pivot_scale": [1, 1, 1],
     "texture": "",
     "animation": [
         {
@@ -41,9 +43,11 @@
                 }
             ],
             "object_translate": [0, 0, 0],
+            "object_rotate": [0, 0, 0],
             "object_scale": [1, 1, 1],
             "pivot_translate": [0, 0, 0],
             "pivot_rotate": [0, 0, 0],
+            "pivot_scale": [1, 1, 1],
             "texture": "",
             "animation": [
                 {
