@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>3D Web Based CAD</title>
+
+    <!-- Utils -->
+    <script src="utils/projection-util.js" defer></script>
+    <script src="utils/utils.js" defer></script>
+    <script src="utils/transform-util.js" defer></script>
+
+    <!-- Libraries -->
+    <script src="lib/webgl-utils.js" defer></script>
+    <script src="lib/canvas.js" defer></script>
+    <script src="lib/gl.js" defer></script>
+
+    <!-- Utils -->
+    <script src="utils/utils.js" defer></script>
+
+    <!-- Models -->
+    <script src="Models/Shape.js" defer></script>
+    <script src="Models/Face.js" defer></script>
+    <script src="Models/Vertex.js" defer></script>
+
+    <!-- Program State -->
+    <script src="state.js" defer></script>
+
+    <!-- Main -->
+    <script src="script.js" defer></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>3D Web Based CAD</h1>
+    </header>
+    <main>
+      <canvas id="webgl-canvas" width="640" height="640">
+        Oops ... your browser doesn't support the HTML5 canvas element
+      </canvas>
+      <div class="container">
+        <h2>Model Controller</h2>
+        <div id="model-configuration" class="config">
+            <label>Select model to edit:</label>
+            <select id="selectedModel" name="selectedModel" onchange="setupModelControls()"></select>
+            <br><hr><br>
+            <label>Rotasi X-axis</label>
+            <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateX" disabled>
+            <label>Rotasi Y-axis</label>
+            <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateY" disabled>
+            <label>Rotasi Z-axis</label>
+            <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateZ" disabled>
+            <label>Translasi X</label>
+            <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateX" disabled>
+            <label>Translasi Y</label>
+            <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateY" disabled>
+            <label>Translasi Z</label>
+            <input type="range" min="-1" step="0.000001" max="1" class="slider" id="translateZ" disabled>
+            <label>Scale X</label>
+            <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleX" value="1" disabled>
+            <label>Scale Y</label>
+            <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleY" value="1" disabled>
+            <label>Scale Z</label>
+            <input type="range" min="0.1" step="0.000001" max="5" class="slider" id="scaleZ" value="1" disabled>
+        </div>
+        <h2>Global Controller</h2>
+        <div id="projection-configuration" class="config">
+            <label>Select projection type:</label>
+            <select id="selectedProjection" name="selectedModel" onchange="setProjectionType()">
+              <option value="perspective">Perspective</option>
+              <option value="orthographic">Orthographic</option>
+              <option value="oblique">Oblique</option>
+            </select>
+            <br><br>
+
+            <label>Camera Angle</label>
+            <input type="range" min="-180" step="1" max="180" class="slider" id="cameraAngle" value="0">
+            <label>Camera Radius</label>
+            <input type="range" min="0" step="0.0001" max="2" class="slider" id="cameraRadius" value="0">
+            <br>
+
+            <label>Light Position X</label>
+            <input type="range" min="-1" step="0.0001" max="1" class="slider" id="lightPositionX" value="1">
+            <label>Light Position Y</label>
+            <input type="range" min="-1" step="0.0001" max="1" class="slider" id="lightPositionY" value="1">
+            <label>Light Position Z</label>
+            <input type="range" min="-1" step="0.0001" max="1" class="slider" id="lightPositionZ" value="-1">
+            <br>
+            <input type="checkbox" id="lightCheckbox" name="isLight" value="Yes">
+            <label for="isLight"> Light Shader</label><br><br>
+
+            <button id="reset-view-btn">Reset view</button>
+            <button id="clear-canvas-btn">Clear canvas</button>
+        </div>
+        <div id="file-configuration" class="config">
+          <h2>Export</h2>
+          <div class="file-config-item">
+            <button id="export-btn">Export</button>
+            <button id="export-current-btn">Export Selected</button>
+          </div>
+          <br>
+          <h2>Import</h2>
+          <div class="file-config-item">
+            <button id="import-btn">Import</button>
+            <input type="file" id="file-input" accept="application/json" />
+          </div>
+        </div>
+        <a href="help.html">Help</a>
+      </div>
+    </main>
+  </body>
+</html>

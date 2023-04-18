@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help</title>
+</head>
+<body>
+    <div style="max-width: 700px;">
+        <h1>Help</h1>
+        <a href="index.html">Back</a>
+
+        <h2>Model Controller</h2>
+        <p>Transformasi dapat dilakukan dengan memilih model terlebih dahulu dari dropdown. Transformasi yang dapat
+            dilakukan adalah rotasi, translasi, dan scale terhadap sumbu X, Y, maupun Z.
+        </p>
+        
+        <h3>a. Rotasi</h3>
+        <p>Parameter rotasi dapat diatur dengan slider berlabel <strong>Rotasi</strong>. Rotasi dilakukan dengan titik tengah model
+            sebagai pusat rotasi.
+        </p>
+        <h3>b. Translasi</h3>
+        <p>Parameter translasi dapat diatur dengan slider berlabel <strong>Translasi</strong>.</p>
+        <h3>c. Scale</h3>
+        <p>Parameter scale dapat diatur dengan slider berlabel <strong>Scale</strong>.</p>
+
+        <h2>Global Controller</h2>
+        <p>Menu pengaturan di Global Controller digunakan untuk mengatur konfigurasi view secara keseluruhan
+            meliputi jenis proyeksi, camera, dan lighting.
+        </p>
+
+        <p>Tombol <strong>Reset View</strong> digunakan untuk mengembalikan seluruh konfigurasi di Global Controller ke 
+            default value. Tombol <strong>Clear Canvas</strong> digunakan untuk menghapus seluruh model di dalam canvas.
+        </p>
+    
+        <h3>a. Proyeksi</h3>
+        <p>Jenis proyeksi dapat diatur dengan memilih dari dropdown berlabel <strong>Select projection type</strong>. 
+            Jenis proyeksi yang tersedia adalah Perspective (default), Oblique, dan Orthographic.
+        </p>
+    
+        <h3>b. Camera</h3>
+        <p>Konfigurasi camera dapat diatur dengan slider berlabel <strong>Camera Angle</strong> dan <strong>Camera Radius</strong>. 
+            Camera Angle digunakan untuk mengatur posisi sudut camera sehingga dapat mengitari model. 
+            Camera Radius digunakan untuk mengubah jarak kamera view.
+        </p>
+    
+        <h3>c. Lighting / Shading</h3>
+        <p>Konfigurasi lighting dapat diatur dengan slider berlabel <strong>Light Position</strong> yang berfungsi
+            untuk mengatur arah datang cahaya. Lighting dapat dimatikan atau dinyalakan dengan
+            checkbox berlabel <strong>Light Shader</strong>. Cahaya berasal dari jarak infinity yang mensimulasikan
+            cahaya dari matahari.
+        </p>
+    
+        <h2>Export</h2>
+        <p>Menu export digunakan untuk menyimpan model ke dalam bentuk file json. Tombol <strong>Export</strong>
+            menyimpan seluruh model. Sedangkan tombol <strong>Export Selected</strong> hanya menyimpan model
+            yang dipilih pada dropdown seleksi model</p>
+    
+        <h2>Import</h2>
+        <p>Menu import digunakan untuk load model dari file dengan format json. Model yang telah disiapkan
+            tersedia di folder test repo proyek ini.
+        </p>
+    
+        <a href="index.html">Back</a>
+    </div>
+</body>
+</html>
