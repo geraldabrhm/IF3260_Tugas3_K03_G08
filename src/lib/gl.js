@@ -268,6 +268,7 @@ function render(vertices, normals, colors, matrix, type) {
   gl.uniform3fv(lightDirection, globalState.lightPosition);
   gl.uniform1i(gl.getUniformLocation(program, "uUseLighting"), globalState.isLight);
 
+  //texture
   image.onload = function() {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
@@ -280,7 +281,6 @@ function render(vertices, normals, colors, matrix, type) {
     }
     gl.drawArrays(type, 0, vertices.length);
   };
-
   // gl.drawArrays(type, 0, vertices.length);
 }
 
