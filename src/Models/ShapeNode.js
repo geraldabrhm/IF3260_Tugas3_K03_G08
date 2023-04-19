@@ -48,15 +48,30 @@ class ShapeNode {
 
     drawSingle(stack) {
         // Generate transformation matrix from stack
-        let transformationMatrix = mUtil.identity()
+        stack.push("scale", this.objectScale);
+        stack.push("rotate", this.objectRotate);
+        stack.push("translate", this.pivotTranslate);
+
+        let transformationMatrix = stack.generateTransformationMatrix();
+
+        console.log(stack.generateTransformationMatrix());
+
         this.faces.forEach(face => face.draw(transformationMatrix));
+
+        stack.pop3();
     }
 
     drawWithSubtrees(stack) {
+        stack.push("scale", this.pivotScale);
+        stack.push("rotate", this.pivotRotate);
+        stack.push("translate", this.pivotTranslate);
+
         this.drawSingle(stack);
         for (let i = 0; i < this.children.length; i++) {
-            this.children[i].drawSingle(stack);
+            this.children[i].drawWithSubtrees(stack);
         }
+
+        stack.pop3();
     }
 }
 

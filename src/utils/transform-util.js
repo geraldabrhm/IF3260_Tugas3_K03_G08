@@ -16,7 +16,7 @@ const mTransform = {
             0, cosVal, sinVal, 0,
             0, -sinVal, cosVal, 0,
             0, 0, 0, 1,
-        ]
+        ];
     },
 
     rotateY: (angle) => {
@@ -27,7 +27,7 @@ const mTransform = {
             0, 1, 0, 0,
             sinVal, 0, cosVal, 0,
             0, 0, 0, 1,
-        ]
+        ];
     },
 
     rotateZ: (angle) => {
@@ -39,6 +39,38 @@ const mTransform = {
             0, 0, 1, 0,
             0, 0, 0, 1,
         ];
+    },
+
+    rotate: (angleX, angleY, angleZ) => {
+        const cosValX = Math.cos(angleX);
+        const sinValX = Math.sin(angleX);
+        const cosValY = Math.cos(angleY);
+        const sinValY = Math.sin(angleY);
+        const cosValZ = Math.cos(angleZ);
+        const sinValZ = Math.sin(angleZ);
+
+        const rotateX = [
+            1, 0, 0, 0,
+            0, cosValX, sinValX, 0,
+            0, -sinValX, cosValX, 0,
+            0, 0, 0, 1,
+        ];
+
+        const rotateY = [
+            cosValY, 0, -sinValY, 0,
+            0, 1, 0, 0,
+            sinValY, 0, cosValY, 0,
+            0, 0, 0, 1,
+        ]
+
+        const rotateZ = [
+            cosValZ, sinValZ, 0, 0,
+           -sinValZ, cosValZ, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1,
+        ];
+
+        return mat4mult(mat4mult(rotateX, rotateY), rotateZ);
     },
 
     scale: (sx, sy, sz) => {
