@@ -5,6 +5,7 @@ const ssCanvas = document.getElementById("webgl-canvas-ss");
 const ssgl = new WebGLCanvas(ssCanvas, ssGlobalState);
 
 // Model Control
+const selectedTextureType = document.getElementById("selectedTextureType");
 const rotateX = document.getElementById("rotateX");
 const rotateY = document.getElementById("rotateY");
 const rotateZ = document.getElementById("rotateZ");
@@ -16,6 +17,7 @@ const scaleY = document.getElementById("scaleY");
 const scaleZ = document.getElementById("scaleZ");
 
 // Subtree Control
+const selectedTextureTypeSs = document.getElementById("selectedTextureTypeSs");
 const rotateXsubtree = document.getElementById("rotateXsubtree");
 const rotateYsubtree = document.getElementById("rotateYsubtree");
 const rotateZsubtree = document.getElementById("rotateZsubtree");
@@ -27,6 +29,7 @@ const scaleYsubtree = document.getElementById("scaleYsubtree");
 const scaleZsubtree = document.getElementById("scaleZsubtree");
 
 // Single Control
+const selectedTextureTypeSingle = document.getElementById("selectedTextureTypeSingle");
 const rotateXsingle = document.getElementById("rotateXsingle");
 const rotateYsingle = document.getElementById("rotateYsingle");
 const rotateZsingle = document.getElementById("rotateZsingle");
@@ -307,6 +310,7 @@ function importShape() {
     const reader = new FileReader();
     reader.readAsText(file, "UTF-8");
     reader.onload = (evt) => {
+
         const shapeJSONstr = evt.target.result;
         const shapeJSON = JSON.parse(shapeJSONstr);
 
@@ -356,6 +360,11 @@ function setupModelControls() {
 
     Array.from(allInput, input => input.removeAttribute("disabled"));
 
+    selectedTextureType.removeAttribute("disabled");
+
+    disableTextureTypeRoot();
+
+    selectedTextureType.value = rootShapeNode.texture;
     rotateX.value = rootShapeNode.pivotRotate[0];
     rotateY.value = rootShapeNode.pivotRotate[1];
     rotateZ.value = rootShapeNode.pivotRotate[2];
@@ -372,6 +381,11 @@ function setupSubtreeControls() {
 
     Array.from(allInput, input => input.removeAttribute("disabled"));
 
+    selectedTextureTypeSs.removeAttribute("disabled");
+
+    disableTextureTypeSs();
+
+    selectedTextureTypeSs.value = selectedShapeNode.texture;
     rotateXsubtree.value = selectedShapeNode.pivotRotate[0];
     rotateYsubtree.value = selectedShapeNode.pivotRotate[1];
     rotateZsubtree.value = selectedShapeNode.pivotRotate[2];
@@ -388,6 +402,11 @@ function setupSingleControls() {
 
     Array.from(allInput, input => input.removeAttribute("disabled"));
 
+    selectedTextureTypeSingle.removeAttribute("disabled");
+
+    disableTextureTypeSingle();
+
+    selectedTextureTypeSingle.value = selectedShapeNode.texture;
     rotateXsingle.value = selectedShapeNode.objectRotate[0];
     rotateYsingle.value = selectedShapeNode.objectRotate[1];
     rotateZsingle.value = selectedShapeNode.objectRotate[2];
@@ -412,6 +431,54 @@ function setProjectionTypeSs() {
 function setViewTypeSs() {
     ssGlobalState.viewType = selectedViewSs.value;
     refresh();
+}
+
+function setTextureType() {
+    rootShapeNode.updateAllChildrenTexture(selectedTextureType.value);
+    disableTextureTypeRoot();
+    refresh();
+}
+
+function setTextureTypeSs() {
+    selectedShapeNode.updateAllChildrenTexture(selectedTextureTypeSs.value);
+    disableTextureTypeSs();
+    refresh();
+}
+
+function setTextureTypeSingle() {
+    selectedShapeNode.texture = selectedTextureTypeSingle.value;
+    disableTextureTypeSingle();
+    refresh();
+}
+
+function disableTextureTypeRoot() {
+    if (rootShapeNode.value === "Custom") {
+        const selectedTextureTypeCustom = document.querySelector("#selectedTextureTypeCustom");
+        Array.from(selectedTextureTypeCustom.children, child => child.removeAttribute("disabled"));
+    } else {
+        const selectedTextureTypeCustom = document.querySelector("#selectedTextureTypeCustom");
+        Array.from(selectedTextureTypeCustom.children, child => child.setAttribute("disabled", true));
+    }
+}
+
+function disableTextureTypeSs() {
+    if (selectedShapeNode.value === "Custom") {
+        const selectedTextureTypeSsCustom = document.querySelector("#selectedTextureTypeSsCustom");
+        Array.from(selectedTextureTypeSsCustom.children, child => child.removeAttribute("disabled"));
+    } else {
+        const selectedTextureTypeSsCustom = document.querySelector("#selectedTextureTypeSsCustom");
+        Array.from(selectedTextureTypeSsCustom.children, child => child.setAttribute("disabled", true));
+    }
+}
+
+function disableTextureTypeSingle() {
+    if (selectedShapeNode.value === "Custom") {
+        const selectedTextureTypeSingleCustom = document.querySelector("#selectedTextureTypeSingleCustom");
+        Array.from(selectedTextureTypeSingleCustom.children, child => child.removeAttribute("disabled"));
+    } else {
+        const selectedTextureTypeSingleCustom = document.querySelector("#selectedTextureTypeSingleCustom");
+        Array.from(selectedTextureTypeSingleCustom.children, child => child.setAttribute("disabled", true));
+    }
 }
 
 function setGlobalControls() {

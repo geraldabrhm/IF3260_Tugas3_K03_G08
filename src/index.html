@@ -52,6 +52,23 @@
               <div class="container" id="model-control">
                 <label><b>Model Control</b></label>
                 <hr>
+                <label>Select Texture Map:</label>
+                <select id="selectedTextureType" name="selectedTextureType" onchange="setTextureType()" disabled>
+                  <option value="custom">Custom</option>
+                  <option value="reflective">Reflective</option>
+                  <option value="bump">Bump</option>
+                </select>
+                <br>
+                <div id="selectedTextureTypeCustom">
+                  <label disabled>Select custom texture: </label>
+                  <select id="selectedTextureTypeCustom" name="selectedTextureType" onchange="setTextureTypeCustom()" disabled>
+                    <option value="0">Lava</option>
+                    <option value="1">Wood</option>
+                    <option value="2">Stone</option>
+                    <option value="3">Water</option>
+                  </select>
+                </div>
+                <br>
                 <label>Rotasi X-axis</label>
                 <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateX" disabled>
                 <label>Rotasi Y-axis</label>
@@ -74,6 +91,23 @@
               <div class="container" id="subtree-control">
                 <label><b>Subtree Control</b></label>
                 <hr>
+                <label>Select Texture Mapping:</label>
+                <select id="selectedTextureTypeSs" name="selectedTextureTypeSs" onchange="setTextureTypeSs()" disabled>
+                  <option value="custom">Custom</option>
+                  <option value="reflective">Environment Mapping</option>
+                  <option value="bump">Bump Mapping</option>
+                </select>
+                <br>
+                <div id="selectedTextureTypeSsCustom">
+                  <label disabled>Select custom texture: </label>
+                  <select id="selectedTextureTypeSsCustom" name="selectedTextureType" onchange="setTextureTypeCustomSs()" disabled>
+                    <option value="0">Lava</option>
+                    <option value="1">Wood</option>
+                    <option value="2">Stone</option>
+                    <option value="3">Water</option>
+                  </select>
+                </div>
+                <br>
                 <label>Rotasi X-axis</label>
                 <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateXsubtree" disabled>
                 <label>Rotasi Y-axis</label>
@@ -96,6 +130,23 @@
               <div class="container" id="single-control">
                 <label><b>Single Control</b></label>
                 <hr>
+                <label>Select Texture Mapping:</label>
+                <select id="selectedTextureTypeSingle" name="selectedTextureTypeSingle" onchange="setTextureTypeSingle()" disabled>
+                  <option value="custom">Custom</option>
+                  <option value="reflective">Environment Mapping</option>
+                  <option value="bump">Bump Mapping</option>
+                </select>
+                <br>
+                <div id="selectedTextureTypeSingleCustom">
+                  <label disabled>Select custom texture: </label>
+                  <select id="selectedTextureTypeSingleCustom" name="selectedTextureType" onchange="setTextureTypeCustomSingle()" disabled>
+                    <option value="0">Lava</option>
+                    <option value="1">Wood</option>
+                    <option value="2">Stone</option>
+                    <option value="3">Water</option>
+                  </select>
+                </div>
+                <br>
                 <label>Rotasi X-axis</label>
                 <input type="range" min="-5" step="0.000001" max="5" class="slider" id="rotateXsingle" disabled>
                 <label>Rotasi Y-axis</label>
@@ -123,14 +174,6 @@
             <div class="container">
               <label><b>Model View</b></label>
               <hr>
-              <label>Select projection type:</label>
-              <select id="selectedProjection" name="selectedModel" onchange="setProjectionType()">
-                <option value="perspective">Perspective</option>
-                <option value="orthographic">Orthographic</option>
-                <option value="oblique">Oblique</option>
-              </select>
-              <br><br>
-
               <label>Camera Angle</label>
               <input type="range" min="-180" step="1" max="180" class="slider" id="cameraAngle" value="0">
               <label>Camera Radius</label>
