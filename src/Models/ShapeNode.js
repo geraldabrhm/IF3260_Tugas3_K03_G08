@@ -42,11 +42,15 @@ class ShapeNode {
         }
     }
 
-    draw() {
-        this.drawWithSubtrees(new TransformationStack());
+    draw(glCanvas, type) {
+        if (type == "subtree"){
+            this.drawWithSubtrees(new TransformationStack(), glCanvas);
+        } else {
+            this.drawSingle(new TransformationStack(), glCanvas);
+        }
     }
 
-    drawSingle(stack) {
+    drawSingle(stack, glCanvas) {
         // Generate transformation matrix from stack
         stack.push("scale", this.objectScale);
         stack.push("rotate", this.objectRotate);
@@ -56,19 +60,19 @@ class ShapeNode {
 
         console.log(stack.generateTransformationMatrix());
 
-        this.faces.forEach(face => face.draw(transformationMatrix));
+        this.faces.forEach(face => face.draw(transformationMatrix, glCanvas));
 
         stack.pop3();
     }
 
-    drawWithSubtrees(stack) {
+    drawWithSubtrees(stack, glCanvas) {
         stack.push("scale", this.pivotScale);
         stack.push("rotate", this.pivotRotate);
         stack.push("translate", this.pivotTranslate);
 
-        this.drawSingle(stack);
+        this.drawSingle(stack, glCanvas);
         for (let i = 0; i < this.children.length; i++) {
-            this.children[i].drawWithSubtrees(stack);
+            this.children[i].drawWithSubtrees(stack, glCanvas);
         }
 
         stack.pop3();

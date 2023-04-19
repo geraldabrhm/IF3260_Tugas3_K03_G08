@@ -153,16 +153,16 @@
               <label><b>Single / Subtree View</b></label>
               <hr>
               <label>Select projection type:</label>
-              <select id="selectedProjectionSs" name="selectedModel" onchange="setProjectionType()">
+              <select id="selectedProjectionSs" name="selectedModel" onchange="setProjectionTypeSs()">
                 <option value="perspective">Perspective</option>
                 <option value="orthographic">Orthographic</option>
                 <option value="oblique">Oblique</option>
               </select>
               <br>
               <label>Select view type:</label>
-              <select id="selectedViewSs" name="selectedModel" onchange="setProjectionType()">
-                <option value="single">Single</option>
+              <select id="selectedViewSs" name="selectedModel" onchange="setViewTypeSs()">
                 <option value="subtree">Subtree</option>
+                <option value="single">Single</option>
               </select>
               <br><br>
 
@@ -200,7 +200,7 @@
         </div>
         <a href="help.html">Help</a>
       </div>
-      <canvas id="webgl-canvas-single" width="640" height="640">
+      <canvas id="webgl-canvas-ss" width="640" height="640">
         Oops ... your browser doesn't support the HTML5 canvas element
       </canvas>
     </main>

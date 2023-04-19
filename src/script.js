@@ -1,3 +1,9 @@
+// Canvas
+const modelCanvas = document.getElementById("webgl-canvas");
+const modelgl = new WebGLCanvas(modelCanvas, globalState);
+const ssCanvas = document.getElementById("webgl-canvas-ss");
+const ssgl = new WebGLCanvas(ssCanvas, ssGlobalState);
+
 // Model Control
 const rotateX = document.getElementById("rotateX");
 const rotateY = document.getElementById("rotateY");
@@ -53,6 +59,9 @@ const lightCheckboxSs = document.getElementById("lightCheckboxSs");
 const resetViewbtnSs = document.getElementById("reset-view-btnSs");
 
 window.onload = function main() {
+    // Canvas
+
+
     // Model Control
     rotateX.addEventListener("input", function() {
         rootShapeNode.pivotRotate[0] = rotateX.value;
@@ -201,10 +210,10 @@ window.onload = function main() {
 
     lightCheckbox.addEventListener("change", () => {
         if (lightCheckbox.checked) {
-            gl.clearColor(0.0, 0.0, 0.0, 0.8);
+            modelgl.gl.clearColor(0.0, 0.0, 0.0, 0.8);
             globalState.isLight = 1;
         } else {       
-            gl.clearColor(0.75, 0.85, 0.8, 1.0);
+            modelgl.gl.clearColor(0.75, 0.85, 0.8, 1.0);
             globalState.isLight = 0;
         }
         refresh();
@@ -243,10 +252,10 @@ window.onload = function main() {
 
     lightCheckboxSs.addEventListener("change", () => {
         if (lightCheckboxSs.checked) {
-            gl.clearColor(0.0, 0.0, 0.0, 0.8);
+            ssgl.gl.clearColor(0.0, 0.0, 0.0, 0.8);
             ssGlobalState.isLight = 1;
         } else {       
-            gl.clearColor(0.75, 0.85, 0.8, 1.0);
+            ssgl.gl.clearColor(0.75, 0.85, 0.8, 1.0);
             ssGlobalState.isLight = 0;
         }
         refresh();
@@ -270,8 +279,10 @@ window.onload = function main() {
 }
 
 function refresh() {
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    rootShapeNode.draw();
+    modelgl.gl.clear(modelgl.gl.COLOR_BUFFER_BIT | modelgl.gl.DEPTH_BUFFER_BIT);
+    rootShapeNode.draw(modelgl, "subtree");
+    ssgl.gl.clear(ssgl.gl.COLOR_BUFFER_BIT | ssgl.gl.DEPTH_BUFFER_BIT);
+    selectedShapeNode.draw(ssgl, ssGlobalState.viewType);
 }
 
 function exportShape() {
@@ -336,6 +347,8 @@ function setSelectedShapeNode(shapeNode) {
 
     setupSubtreeControls();
     setupSingleControls();
+
+    refresh();
 }
 
 function setupModelControls() {
@@ -388,6 +401,16 @@ function setupSingleControls() {
 
 function setProjectionType() {
     globalState.projectionType = selectedProjection.value;
+    refresh();
+}
+
+function setProjectionTypeSs() {
+    ssGlobalState.projectionType = selectedProjectionSs.value;
+    refresh();
+}
+
+function setViewTypeSs() {
+    ssGlobalState.viewType = selectedViewSs.value;
     refresh();
 }
 

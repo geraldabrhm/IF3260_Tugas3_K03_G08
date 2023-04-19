@@ -4,7 +4,8 @@ function defaultGlobalState() {
         cameraRadius: 0,
         cameraRotation: 0,
         lightPosition: [1, 1, -1],
-        isLight: 0
+        isLight: 0,
+        viewType: "subtree"
     }
 }
 
