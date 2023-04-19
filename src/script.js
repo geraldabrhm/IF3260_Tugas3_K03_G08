@@ -285,7 +285,7 @@ window.onload = function main() {
     });
 
     resetViewbtnSs.addEventListener("click", function() {
-        resetView();
+        resetSsView();
     });
 
     // Export
@@ -302,22 +302,25 @@ window.onload = function main() {
 }
 
 function refresh() {
-    modelgl.gl.clear(modelgl.gl.COLOR_BUFFER_BIT | modelgl.gl.DEPTH_BUFFER_BIT);
-    rootShapeNode.draw(modelgl, "subtree", currentAnimationFrame-1, animationFramesBetween);
-    ssgl.gl.clear(ssgl.gl.COLOR_BUFFER_BIT | ssgl.gl.DEPTH_BUFFER_BIT);
-    selectedShapeNode.draw(ssgl, ssGlobalState.viewType, currentAnimationFrame-1, animationFramesBetween);
+    if (rootShapeNode != null) {
+        modelgl.gl.clear(modelgl.gl.COLOR_BUFFER_BIT | modelgl.gl.DEPTH_BUFFER_BIT);
+        rootShapeNode.draw(modelgl, "subtree", currentAnimationFrame-1, animationFramesBetween);
+        ssgl.gl.clear(ssgl.gl.COLOR_BUFFER_BIT | ssgl.gl.DEPTH_BUFFER_BIT);
+        selectedShapeNode.draw(ssgl, ssGlobalState.viewType, currentAnimationFrame-1, animationFramesBetween);
+    }
 }
 
 function exportShape() {
-    // const data = JSON.stringify(transformedShapes);
-    // const blob = new Blob([data], { type: "application/json" });
-    // const url = URL.createObjectURL(blob);
+    const data = JSON.stringify(rootShapeNode);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
 
-    // const link = document.createElement("a");
-    // link.href = url;
-    // link.download = "test.json";
-    // document.body.appendChild(link);
-    // link.click();
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "test.json";
+    document.body.appendChild(link);
+    link.click();
+
 }
 
 function importShape() {
@@ -342,7 +345,7 @@ function importShape() {
         setupSubtreeControls();
         setupSingleControls();
         refresh();
-
+        document.getElementById("component-tree").innerHTML = "";
         document.getElementById("component-tree").appendChild(generateComponentTree(rootShapeNode));
     };
 }
@@ -519,11 +522,11 @@ function setGlobalControls() {
     lightPositionZ.value = globalState.lightPosition[2];
     if (globalState.isLight == 0) {
         lightCheckbox.checked = false;
-        gl.clearColor(0.75, 0.85, 0.8, 1.0);
+        modelgl.gl.clearColor(0.75, 0.85, 0.8, 1.0);
     }
     else {
         lightCheckbox.checked = true;
-        gl.clearColor(0.0, 0.0, 0.0, 0.8);
+        modelgl.gl.clearColor(0.0, 0.0, 0.0, 0.8);
     }
 }
 
@@ -536,17 +539,23 @@ function setSsGlobalControls() {
     lightPositionZSs.value = ssGlobalState.lightPosition[2];
     if (ssGlobalState.isLight == 0) {
         lightCheckboxSs.checked = false;
-        gl.clearColor(0.75, 0.85, 0.8, 1.0);
+        ssgl.gl.clearColor(0.75, 0.85, 0.8, 1.0);
     }
     else {
         lightCheckboxSs.checked = true;
-        gl.clearColor(0.0, 0.0, 0.0, 0.8);
+        ssgl.gl.clearColor(0.0, 0.0, 0.0, 0.8);
     }
 }
 
 function resetView() {
     globalState = defaultGlobalState();
     setGlobalControls();
+    refresh();
+}
+
+function resetSsView() {
+    ssGlobalState = defaultGlobalState();
+    setSsGlobalControls();
     refresh();
 }
 
