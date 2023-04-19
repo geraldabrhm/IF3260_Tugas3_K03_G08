@@ -152,9 +152,9 @@ class WebGLCanvas {
     this.images = 
     [
       "Images/Texture1.png",
-      "Images/Texture2.jpeg",
-      "Images/Texture3.jpeg",
-      "Images/Texture4.jpeg",
+      "Images/Texture2.png",
+      "Images/Texture3.png",
+      "Images/Texture4.png",
     ];
 
     for (var i = 0; i < this.images.length; i++) 
@@ -270,7 +270,7 @@ class WebGLCanvas {
      *
      * Renders the vertices to the canvas.
      */
-  render(vertices, normals, colors, matrix, type, texture) {
+  render(vertices, normals, colors, matrix, type, texture, textureIndex) {
     // * Position buffer
     const bufferObject = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferObject);
@@ -334,12 +334,37 @@ class WebGLCanvas {
       0
     );
 
+
+    const textureCoordinate = [];
+
+    // generate 2d texture coordinate form verticces
+    const n = normal(vertices);
+
+    let maxIndex = 0;
+    for (let i = 0; i < n.length; i++) {
+      if (Math.abs(n[i]) > Math.abs(n[maxIndex])) {
+        maxIndex = i;
+      }
+    }
+
+    console.log(maxIndex)
+
+    for (let i = 0; i < vertices.length; i++) {
+      if (maxIndex === 0) {
+        textureCoordinate.push([vertices[i][1], vertices[i][2]]);
+      } else if (maxIndex === 1) {
+        textureCoordinate.push([vertices[i][2], vertices[i][0]]);
+      } else {
+        textureCoordinate.push([vertices[i][0], vertices[i][1]]);
+      }
+    }
+
     const bufferTexture = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferTexture);
 
     this.gl.bufferData(
       this.gl.ARRAY_BUFFER,
-      new Float32Array(flatten(vertices)),
+      new Float32Array(flatten(textureCoordinate)),
       this.gl.STATIC_DRAW
     );
 
@@ -348,7 +373,7 @@ class WebGLCanvas {
 
     this.gl.vertexAttribPointer(
       textureAttribLocation, 
-      4,
+      2,
       this.gl.FLOAT,
       false,
       0,
@@ -369,7 +394,7 @@ class WebGLCanvas {
       this.gl.uniform1i(uUseTextureCustom, 0);
     }
     this.gl.uniform1i(uCubeTexture, 4);
-    this.gl.uniform1i(uTexture, 0);
+    this.gl.uniform1i(uTexture, textureIndex);
 
     
 

@@ -38,6 +38,30 @@ function vec4multmat4(v, m) {
   return vRes;
 }
 
+function normal(m) {
+    const [a, b, c] = m;
+
+    const [x1, y1, z1] = a;
+    const [x2, y2, z2] = b;
+    const [x3, y3, z3] = c;
+
+    const v1 = [x2 - x1, y2 - y1, z2 - z1];
+    const v2 = [x3 - x1, y3 - y1, z3 - z1];
+
+    const normal = [
+      v1[1] * v2[2] - v1[2] * v2[1],
+      v1[2] * v2[0] - v1[0] * v2[2],
+      v1[0] * v2[1] - v1[1] * v2[0]
+    ];
+
+    const magnitude = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1] + normal[2] * normal[2]);
+    normal[0] /= magnitude;
+    normal[1] /= magnitude;
+    normal[2] /= magnitude;
+
+    return normal;
+}
+
 function generateTransformationMatrix(transformationState, centroid) {
   translation = transformationState.translation;
   rotation = transformationState.rotation;

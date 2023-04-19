@@ -12,6 +12,7 @@ class ShapeNode {
         this.pivotRotate = obj.pivotRotate;
         this.pivotScale = obj.pivotScale;
         this.texture = obj.texture;
+        this.textureIndex = 0;
 
         this.animation = [];
         this.loadAnimationFrames(obj.animation);
@@ -42,6 +43,13 @@ class ShapeNode {
         }
     }
 
+    updateAllChildrenTextureCustom(Index) {
+        this.textureIndex = Index;
+        for (let i = 0; i < this.children.length; i++) {
+            this.children[i].updateAllChildrenTextureCustom(Index);
+        }
+    }
+
     loadAnimationFrames(frames) {
         for (const frame of frames) {
             const f = new AnimationFrame(frame);
@@ -65,7 +73,7 @@ class ShapeNode {
 
         let transformationMatrix = stack.generateTransformationMatrix();
 
-        this.faces.forEach(face => face.draw(transformationMatrix, glCanvas, this.texture));
+        this.faces.forEach(face => face.draw(transformationMatrix, glCanvas, this.texture, this.textureIndex));
 
         stack.pop3();
     }
