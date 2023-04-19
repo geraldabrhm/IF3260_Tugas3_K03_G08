@@ -3,6 +3,7 @@ class WebGLCanvas {
     /**
      * Initializes the WebGL context.
      */
+    this.textures = [];
     this.gl = WebGLUtils.setupWebGL(canvas, {
       preserveDrawingBuffer: true,
     });
@@ -48,6 +49,9 @@ class WebGLCanvas {
 
       attribute vec2 a_texcoord;
       varying vec2 v_texcoord;
+      varying vec3 v_worldPosition;
+
+      varying vec3 cameraPosition;
       
       void main()
       {
@@ -55,6 +59,9 @@ class WebGLCanvas {
         gl_Position = viewTransformMatrix * projectionMatrix * uMatrix * vec4(vertPosition);
         vNormal = aNormal;
         v_texcoord = a_texcoord;
+        v_worldPosition = (uMatrix * vec4(vertPosition)).xyz;
+
+        cameraPosition = vec3(viewTransformMatrix[3][0], viewTransformMatrix[3][1], viewTransformMatrix[3][2]);
       }
     `
     this.gl.shaderSource(vertexShader, vertexShaderText);
@@ -64,19 +71,32 @@ class WebGLCanvas {
 
       uniform vec3 uLightDirection;
       uniform bool uUseLighting;
+      uniform bool uUseTextureCustom;
       
       varying vec4 fragColor;
       varying vec3 vNormal;
 
       varying vec2 v_texcoord;
       uniform sampler2D u_texture;
+      uniform samplerCube u_cube_texture;
+
+      varying vec3 v_worldPosition;
+      varying vec3 cameraPosition;
 
       void main()
       {
-        float light = dot(vNormal, normalize(uLightDirection));
-        gl_FragColor = fragColor;
-        if (uUseLighting) {
-          gl_FragColor.rgb *= light;
+        if (uUseTextureCustom) {
+          float light = dot(vNormal, normalize(uLightDirection));
+          gl_FragColor = texture2D(u_texture, v_texcoord);
+          if (uUseLighting) {
+            gl_FragColor.rgb *= light;
+          }
+        } else {
+          vec3 worldNormal = normalize(vNormal);
+          vec3 eyeToSurfaceDir =  normalize(v_worldPosition - cameraPosition);
+          vec3 reflection = reflect(eyeToSurfaceDir, worldNormal);
+
+          gl_FragColor = textureCube(u_cube_texture, reflection);
         }
       }
     `
@@ -128,6 +148,121 @@ class WebGLCanvas {
      * Uses the program.
      */
     this.gl.useProgram(this.program);
+
+    this.images = 
+    [
+      "Images/Texture1.png",
+      "Images/Texture2.jpeg",
+      "Images/Texture3.jpeg",
+      "Images/Texture4.jpeg",
+    ];
+
+    for (var i = 0; i < this.images.length; i++) 
+    {
+      const texture = this.gl.createTexture();
+      this.gl.activeTexture(this.gl.TEXTURE0 + i);
+      this.textures.push(texture);
+      this.gl.bindTexture(this.gl.TEXTURE_2D, this.textures[i]);
+
+      this.gl.texImage2D(
+        this.gl.TEXTURE_2D,
+        0,
+        this.gl.RGBA,
+        1,
+        1,
+        0,
+        this.gl.RGBA,
+        this.gl.UNSIGNED_BYTE,
+        new Uint8Array([0, 0, 255, 255])
+      );
+
+      function isPowerOf2(value) {
+        return (value & (value - 1)) == 0;
+      }
+
+      const image = new Image();
+      image.src = this.images[i];
+      image.i = i
+      image.onload = () => {
+        this.gl.activeTexture(this.gl.TEXTURE0 + image.i);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.textures[image.i]);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
+        if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+          this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        } else {
+          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        }
+      }
+    }
+
+    // reflection texture
+    const reflectionTexture = this.gl.createTexture();
+
+    this.gl.activeTexture(this.gl.TEXTURE0 + this.images.length);
+    this.textures.push(reflectionTexture);
+    this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.textures[this.images.length]);
+
+    const faceInfos = [
+      {
+        target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_X,
+        url: 'Images/pos-x.jpg',
+      },
+      {
+        target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+        url: 'Images/neg-x.jpg',
+      },
+      {
+        target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+        url: 'Images/pos-y.jpg',
+      },
+      {
+        target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+        url: 'Images/neg-y.jpg',
+      },
+      {
+        target: this.gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+        url: 'Images/pos-z.jpg',
+      },
+      {
+        target: this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
+        url: 'Images/neg-z.jpg',
+      },
+    ];
+
+    faceInfos.forEach((faceInfo) => {
+      const {target, url} = faceInfo;
+
+      const level = 0;
+      const internalFormat = this.gl.RGBA;
+      const width = 512;
+      const height = 512;
+      const format = this.gl.RGBA;
+      const type = this.gl.UNSIGNED_BYTE;
+      this.gl.texImage2D(target, level, internalFormat, width, height, 0, format, type, null);
+
+      const image = new Image();
+      image.src = url;
+      image.onload = () => {
+        this.gl.activeTexture(this.gl.TEXTURE0 + this.images.length);
+        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.textures[this.images.length]);
+        this.gl.texImage2D(target, level, internalFormat, format, type, image);
+        this.gl.generateMipmap(this.gl.TEXTURE_CUBE_MAP);
+      }
+    });
+    this.gl.generateMipmap(this.gl.TEXTURE_CUBE_MAP);
+    this.gl.texParameteri(this.gl.TEXTURE_CUBE_MAP, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
+  }
+
+  loadImage(src) {
+    return new Promise((resolve, reject) => {
+      let img = new Image()
+      img.onload = () => resolve(img)
+      img.onerror = reject
+      img.src = src
+    })
   }
 
   /**
@@ -199,47 +334,37 @@ class WebGLCanvas {
       0
     );
 
-    // // * Texture buffer
-    // const bufferTexture = gl.createBuffer();
-    // gl.bindBuffer(gl.ARRAY_BUFFER, bufferTexture);
+    const bufferTexture = this.gl.createBuffer();
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferTexture);
 
-    // gl.bufferData(
-    //   gl.ARRAY_BUFFER,
-    //   new Float32Array(flatten(vertices)),
-    //   gl.STATIC_DRAW
-    // );
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(flatten(vertices)),
+      this.gl.STATIC_DRAW
+    );
 
-    // const textureAttribLocation = gl.getAttribLocation(program, "a_texcoord");
-    // gl.enableVertexAttribArray(textureAttribLocation);
+    const textureAttribLocation = this.gl.getAttribLocation(this.program, "a_texcoord");
+    this.gl.enableVertexAttribArray(textureAttribLocation);
 
-    // gl.vertexAttribPointer(
-    //   textureAttribLocation, 
-    //   4,
-    //   gl.FLOAT,
-    //   false,
-    //   0,
-    //   0
-    // );
-
-    // var texture = gl.createTexture();
-    // gl.bindTexture(gl.TEXTURE_2D, texture);
-
-    // var level = 0;
-    // var internalFormat = gl.RGBA;
-    // var width = 1;
-    // var height = 1;
-    // var border = 0;
-    // var srcFormat = gl.RGBA;
-    // var srcType = gl.UNSIGNED_BYTE;
-    // var pixel = new Uint8Array([0, 255, 0, 255]);
-    // gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
-
-    // var image = new Image();
-    // image.src = "Images/Free-Texture.png";
+    this.gl.vertexAttribPointer(
+      textureAttribLocation, 
+      4,
+      this.gl.FLOAT,
+      false,
+      0,
+      0
+    );
     
     const matrixUniLocation = this.gl.getUniformLocation(this.program, "uMatrix");
     const projectionMatrix = this.gl.getUniformLocation(this.program, "projectionMatrix");
     const viewTransformMatrix = this.gl.getUniformLocation(this.program, "viewTransformMatrix");
+    const uTexture = this.gl.getUniformLocation(this.program, "u_texture");
+    const uCubeTexture = this.gl.getUniformLocation(this.program, "u_cube_texture");
+    const uUseTextureCustom = this.gl.getUniformLocation(this.program, "uUseTextureCustom");
+
+    this.gl.uniform1i(uUseTextureCustom, 0);
+    this.gl.uniform1i(uCubeTexture, 4);
+    this.gl.uniform1i(uTexture, 0);
 
     // Handle camera matrix transformation
     const translateRMatrix = mTransform.translate(0, 0, this.globalState.cameraRadius); 
@@ -272,19 +397,6 @@ class WebGLCanvas {
     this.gl.uniform3fv(lightDirection, this.globalState.lightPosition);
     this.gl.uniform1i(this.gl.getUniformLocation(this.program, "uUseLighting"), this.globalState.isLight);
 
-    // //texture
-    // image.onload = function() {
-    //   gl.bindTexture(gl.TEXTURE_2D, texture);
-    //   gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
-    //   if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-    //     gl.generateMipmap(gl.TEXTURE_2D);
-    //   } else {
-    //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    //   }
-    //   gl.drawArrays(type, 0, vertices.length);
-    // };
     this.gl.drawArrays(type, 0, vertices.length);
   }
 
