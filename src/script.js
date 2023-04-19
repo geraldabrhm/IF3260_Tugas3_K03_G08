@@ -37,6 +37,11 @@ const scaleXsingle = document.getElementById("scaleXsingle");
 const scaleYsingle = document.getElementById("scaleYsingle");
 const scaleZsingle = document.getElementById("scaleZsingle");
 
+// Animation Control
+const animPlayPause = document.getElementById("animPlayPause");
+const currentFrameSpan = document.getElementById("currentFrame");
+const totalFramesSpan = document.getElementById("totalFrames");
+
 // Model View
 const selectedProjection = document.getElementById("selectedProjection");
 const cameraAngle = document.getElementById("cameraAngle");
@@ -59,9 +64,6 @@ const lightCheckboxSs = document.getElementById("lightCheckboxSs");
 const resetViewbtnSs = document.getElementById("reset-view-btnSs");
 
 window.onload = function main() {
-    // Canvas
-
-
     // Model Control
     rotateX.addEventListener("input", function() {
         rootShapeNode.pivotRotate[0] = rotateX.value;
@@ -182,6 +184,24 @@ window.onload = function main() {
         refresh();
     });
 
+    // Animation Control
+    animPlayPause.addEventListener("click", () => {
+        if (!animationPlaying) {
+            animPlayPause.innerHTML = "Pause";
+            animationPlaying = true;
+            animationInterval = setInterval(() => {
+                currentAnimationFrame = ((currentAnimationFrame+1) % totalAnimationFrames)+1
+                currentFrameSpan.innerHTML = currentAnimationFrame;
+                refresh();
+            }, timeBetweenFrames);
+        } else {
+            animPlayPause.innerHTML = "Play";
+            animationPlaying = false;
+            clearInterval(animationInterval);
+            refresh();
+        }
+    });
+
     // Model View
     cameraAngle.addEventListener("input",  () => {
         globalState.cameraRotation = cameraAngle.value;
@@ -280,9 +300,9 @@ window.onload = function main() {
 
 function refresh() {
     modelgl.gl.clear(modelgl.gl.COLOR_BUFFER_BIT | modelgl.gl.DEPTH_BUFFER_BIT);
-    rootShapeNode.draw(modelgl, "subtree");
+    rootShapeNode.draw(modelgl, "subtree", currentAnimationFrame-1, animationFramesBetween);
     ssgl.gl.clear(ssgl.gl.COLOR_BUFFER_BIT | ssgl.gl.DEPTH_BUFFER_BIT);
-    selectedShapeNode.draw(ssgl, ssGlobalState.viewType);
+    selectedShapeNode.draw(ssgl, ssGlobalState.viewType, currentAnimationFrame-1, animationFramesBetween);
 }
 
 function exportShape() {
@@ -313,6 +333,7 @@ function importShape() {
         rootShapeNode = new ShapeNode(shapeJSON);
         setSelectedShapeNode(rootShapeNode);
 
+        setupAnimationControls();
         setupModelControls();
         setupSubtreeControls();
         setupSingleControls();
@@ -349,6 +370,14 @@ function setSelectedShapeNode(shapeNode) {
     setupSingleControls();
 
     refresh();
+}
+
+function setupAnimationControls() {
+    animPlayPause.removeAttribute("disabled");
+    currentAnimationFrame = 1;
+    totalAnimationFrames = (rootShapeNode.getMaximumNumberOfFrames()-1) * (animationFramesBetween+1);
+    currentFrameSpan.innerHTML = currentAnimationFrame;
+    totalFramesSpan.innerHTML = totalAnimationFrames;
 }
 
 function setupModelControls() {

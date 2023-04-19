@@ -32,6 +32,21 @@
             "scale": [1, 1, 1]
         },
         {
+            "translate": [0.3, 0, 0],
+            "rotate": [0, 0, 0],
+            "scale": [1, 1, 1]
+        },
+        {
+            "translate": [0, 0, 0],
+            "rotate": [0, 0, 0],
+            "scale": [1, 1, 1]
+        },
+        {
+            "translate": [-0.3, 0, 0],
+            "rotate": [0, 0, 0],
+            "scale": [1, 1, 1]
+        },
+        {
             "translate": [0, 0, 0],
             "rotate": [0, 0, 0],
             "scale": [1, 1, 1]
@@ -68,6 +83,21 @@
             "animation": [
                 {
                     "translate": [0, 0, 0],
+                    "rotate": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "translate": [0, 0.2, 0],
+                    "rotate": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "translate": [0, 0, 0],
+                    "rotate": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "translate": [0, -0.2, 0],
                     "rotate": [0, 0, 0],
                     "scale": [1, 1, 1]
                 },
@@ -115,6 +145,21 @@
                             "translate": [0, 0, 0],
                             "rotate": [0, 0, 0],
                             "scale": [1, 1, 1]
+                        },
+                        {
+                            "translate": [0, 0, 0],
+                            "rotate": [0, 0, 0],
+                            "scale": [1, 1, 1]
+                        },
+                        {
+                            "translate": [0, 0, 0],
+                            "rotate": [0, 0, 0],
+                            "scale": [1, 1, 1]
+                        },
+                        {
+                            "translate": [0, 0, 0],
+                            "rotate": [0, 0, 0],
+                            "scale": [1, 1, 1]
                         }
                     ],
                     "children": []
@@ -149,6 +194,21 @@
             "pivotScale": [1, 1, 1],
             "texture": "",
             "animation": [
+                {
+                    "translate": [0, 0, 0],
+                    "rotate": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "translate": [0, 0, 0],
+                    "rotate": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "translate": [0, 0, 0],
+                    "rotate": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
                 {
                     "translate": [0, 0, 0],
                     "rotate": [0, 0, 0],

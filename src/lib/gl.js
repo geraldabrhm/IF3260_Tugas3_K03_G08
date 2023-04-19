@@ -372,7 +372,6 @@ class WebGLCanvas {
     cameraMatrix = mat4mult(cameraMatrix, translateRMatrix);
     
     const viewTransform = mUtil.inverseMat4(cameraMatrix);
-    console.info(viewTransform);
 
     this.gl.uniformMatrix4fv(viewTransformMatrix, false, flatten(viewTransform));
     this.gl.uniformMatrix4fv(matrixUniLocation, false, matrix);

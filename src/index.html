@@ -44,6 +44,7 @@
       </canvas>
       <div class="container">
         <h2>Model Controller</h2>
+        <hr>
         <div class="config">
             <label><b>Component Tree</b></label>
             <ul id="component-tree"></ul>
@@ -117,7 +118,14 @@
               </div>
             </div>
         </div>
+        <h2>Animation Controller</h2>
+        <hr>
+        <div class="config container">
+          <button id="animPlayPause" disabled>Play</button>
+          Frame <span id="currentFrame">0</span> out of <span id="totalFrames">0</span> frames
+        </div>
         <h2>Global Controller</h2>
+        <hr>
         <div id="projection-configuration" class="config">
           <div class="column-container">
             <div class="container">
@@ -188,11 +196,13 @@
         </div>
         <div id="file-configuration" class="config">
           <h2>Export</h2>
+          <hr>
           <div class="file-config-item">
             <button id="export-btn">Export</button>
           </div>
           <br>
           <h2>Import</h2>
+          <hr>
           <div class="file-config-item">
             <button id="import-btn">Import</button>
             <input type="file" id="file-input" accept="application/json" />
