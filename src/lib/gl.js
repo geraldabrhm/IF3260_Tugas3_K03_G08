@@ -86,17 +86,17 @@ class WebGLCanvas {
       void main()
       {
         if (uUseTextureCustom) {
-          float light = dot(vNormal, normalize(uLightDirection));
           gl_FragColor = texture2D(u_texture, v_texcoord);
-          if (uUseLighting) {
-            gl_FragColor.rgb *= light;
-          }
         } else {
           vec3 worldNormal = normalize(vNormal);
           vec3 eyeToSurfaceDir =  normalize(v_worldPosition - cameraPosition);
           vec3 reflection = reflect(eyeToSurfaceDir, worldNormal);
 
           gl_FragColor = textureCube(u_cube_texture, reflection);
+        }
+        float light = dot(vNormal, normalize(uLightDirection));
+        if (uUseLighting) {
+          gl_FragColor.rgb *= light;
         }
       }
     `

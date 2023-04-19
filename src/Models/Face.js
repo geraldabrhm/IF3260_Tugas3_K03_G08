@@ -16,8 +16,16 @@ class Face {
       this.colors.push(color);
   }
 
-  generateNormal() {
-    const [a, b, c] = this.vertices;
+  generateNormal(transformationMatrix) {
+
+  const cloneVertices = [...this.vertices];
+    
+  for (let i = 0; i < cloneVertices.length; i++) {
+    cloneVertices[i] = vec4multmat4(cloneVertices[i], transformationMatrix);
+  }
+
+  const [a, b, c] = cloneVertices;
+
     const [x1, y1, z1] = a;
     const [x2, y2, z2] = b;
     const [x3, y3, z3] = c;
@@ -38,7 +46,7 @@ class Face {
 
     const normalMat = []
 
-    for (let i = 0; i < this.vertices.length; i++) {
+    for (let i = 0; i < cloneVertices.length; i++) {
       normalMat.push(normal);
     }
 
@@ -46,6 +54,6 @@ class Face {
   }
 
   draw(matrixTransformation, glCanvas, texture) {
-      glCanvas.render(this.vertices, this.generateNormal(), this.colors, matrixTransformation, glCanvas.gl.TRIANGLE_FAN, texture);
+      glCanvas.render(this.vertices, this.generateNormal(matrixTransformation), this.colors, matrixTransformation, glCanvas.gl.TRIANGLE_FAN, texture);
   }
 }
