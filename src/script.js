@@ -300,8 +300,11 @@ function importShape() {
         const shapeJSON = JSON.parse(shapeJSONstr);
 
         rootShapeNode = new ShapeNode(shapeJSON);
+        setSelectedShapeNode(rootShapeNode);
 
         setupModelControls();
+        setupSubtreeControls();
+        setupSingleControls();
         refresh();
 
         document.getElementById("component-tree").appendChild(generateComponentTree(rootShapeNode));
@@ -331,9 +334,8 @@ function generateComponentTree(shapeNode) {
 function setSelectedShapeNode(shapeNode) {
     selectedShapeNode = shapeNode;
 
-    // Set subtree control
-
-    // Set single control
+    setupSubtreeControls();
+    setupSingleControls();
 }
 
 function setupModelControls() {
@@ -350,6 +352,38 @@ function setupModelControls() {
     scaleX.value = rootShapeNode.pivotScale[0];
     scaleY.value = rootShapeNode.pivotScale[1];
     scaleZ.value = rootShapeNode.pivotScale[2];
+}
+
+function setupSubtreeControls() {
+    const allInput = document.querySelectorAll("#subtree-control > input");
+
+    Array.from(allInput, input => input.removeAttribute("disabled"));
+
+    rotateXsubtree.value = selectedShapeNode.pivotRotate[0];
+    rotateYsubtree.value = selectedShapeNode.pivotRotate[1];
+    rotateZsubtree.value = selectedShapeNode.pivotRotate[2];
+    translateXsubtree.value = selectedShapeNode.pivotTranslate[0];
+    translateYsubtree.value = selectedShapeNode.pivotTranslate[1];
+    translateZsubtree.value = selectedShapeNode.pivotTranslate[2];
+    scaleXsubtree.value = selectedShapeNode.pivotScale[0];
+    scaleYsubtree.value = selectedShapeNode.pivotScale[1];
+    scaleZsubtree.value = selectedShapeNode.pivotScale[2];
+}
+
+function setupSingleControls() {
+    const allInput = document.querySelectorAll("#single-control > input");
+
+    Array.from(allInput, input => input.removeAttribute("disabled"));
+
+    rotateXsingle.value = selectedShapeNode.objectRotate[0];
+    rotateYsingle.value = selectedShapeNode.objectRotate[1];
+    rotateZsingle.value = selectedShapeNode.objectRotate[2];
+    translateXsingle.value = selectedShapeNode.objectTranslate[0];
+    translateYsingle.value = selectedShapeNode.objectTranslate[1];
+    translateZsingle.value = selectedShapeNode.objectTranslate[2];
+    scaleXsingle.value = selectedShapeNode.objectScale[0];
+    scaleYsingle.value = selectedShapeNode.objectScale[1];
+    scaleZsingle.value = selectedShapeNode.objectScale[2];
 }
 
 function setProjectionType() {
