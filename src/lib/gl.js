@@ -40,12 +40,16 @@ const vertexShaderText = `
 
   attribute vec3 aNormal;
   varying vec3 vNormal;
+
+  attribute vec2 a_texcoord;
+  varying vec2 v_texcoord;
   
   void main()
   {
     fragColor = vertColor;
     gl_Position = viewTransformMatrix * projectionMatrix * uMatrix * vec4(vertPosition);
     vNormal = aNormal;
+    v_texcoord = a_texcoord;
   }
 `
 gl.shaderSource(vertexShader, vertexShaderText);
@@ -59,10 +63,13 @@ const fragmentShaderText = `
   varying vec4 fragColor;
   varying vec3 vNormal;
 
+  varying vec2 v_texcoord;
+  uniform sampler2D u_texture;
+
   void main()
   {
     float light = dot(vNormal, normalize(uLightDirection));
-    gl_FragColor = vec4(fragColor);
+    gl_FragColor = fragColor;
     if (uUseLighting) {
       gl_FragColor.rgb *= light;
     }
@@ -186,6 +193,44 @@ function render(vertices, normals, colors, matrix, type) {
     0
   );
 
+  // // * Texture buffer
+  // const bufferTexture = gl.createBuffer();
+  // gl.bindBuffer(gl.ARRAY_BUFFER, bufferTexture);
+
+  // gl.bufferData(
+  //   gl.ARRAY_BUFFER,
+  //   new Float32Array(flatten(vertices)),
+  //   gl.STATIC_DRAW
+  // );
+
+  // const textureAttribLocation = gl.getAttribLocation(program, "a_texcoord");
+  // gl.enableVertexAttribArray(textureAttribLocation);
+
+  // gl.vertexAttribPointer(
+  //   textureAttribLocation, 
+  //   4,
+  //   gl.FLOAT,
+  //   false,
+  //   0,
+  //   0
+  // );
+
+  // var texture = gl.createTexture();
+  // gl.bindTexture(gl.TEXTURE_2D, texture);
+
+  // var level = 0;
+  // var internalFormat = gl.RGBA;
+  // var width = 1;
+  // var height = 1;
+  // var border = 0;
+  // var srcFormat = gl.RGBA;
+  // var srcType = gl.UNSIGNED_BYTE;
+  // var pixel = new Uint8Array([0, 255, 0, 255]);
+  // gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
+
+  // var image = new Image();
+  // image.src = "Images/Free-Texture.png";
+  
   const matrixUniLocation = gl.getUniformLocation(program, "uMatrix");
   const projectionMatrix = gl.getUniformLocation(program, "projectionMatrix");
   const viewTransformMatrix = gl.getUniformLocation(program, "viewTransformMatrix");
@@ -223,5 +268,22 @@ function render(vertices, normals, colors, matrix, type) {
   gl.uniform3fv(lightDirection, globalState.lightPosition);
   gl.uniform1i(gl.getUniformLocation(program, "uUseLighting"), globalState.isLight);
 
+  // //texture
+  // image.onload = function() {
+  //   gl.bindTexture(gl.TEXTURE_2D, texture);
+  //   gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, srcFormat, srcType, image);
+  //   if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+  //     gl.generateMipmap(gl.TEXTURE_2D);
+  //   } else {
+  //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  //     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  //   }
+  //   gl.drawArrays(type, 0, vertices.length);
+  // };
   gl.drawArrays(type, 0, vertices.length);
+}
+
+function isPowerOf2(value) {
+  return (value & (value - 1)) == 0;
 }
