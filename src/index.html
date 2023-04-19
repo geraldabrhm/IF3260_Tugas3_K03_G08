@@ -182,6 +182,13 @@
             <div class="container">
               <label><b>Model View</b></label>
               <hr>
+              <label>Select projection type:</label>
+              <select id="selectedProjection" name="selectedModel" onchange="setProjectionType()">
+                <option value="perspective">Perspective</option>
+                <option value="orthographic">Orthographic</option>
+                <option value="oblique">Oblique</option>
+              </select>
+              <br><br>
               <label>Camera Angle</label>
               <input type="range" min="-180" step="1" max="180" class="slider" id="cameraAngle" value="0">
               <label>Camera Radius</label>
