@@ -270,7 +270,7 @@ class WebGLCanvas {
      *
      * Renders the vertices to the canvas.
      */
-  render(vertices, normals, colors, matrix, type) {
+  render(vertices, normals, colors, matrix, type, texture) {
     // * Position buffer
     const bufferObject = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferObject);
@@ -362,9 +362,16 @@ class WebGLCanvas {
     const uCubeTexture = this.gl.getUniformLocation(this.program, "u_cube_texture");
     const uUseTextureCustom = this.gl.getUniformLocation(this.program, "uUseTextureCustom");
 
-    this.gl.uniform1i(uUseTextureCustom, 0);
+    if (texture == "custom") 
+    {
+      this.gl.uniform1i(uUseTextureCustom, 1);
+    } else {
+      this.gl.uniform1i(uUseTextureCustom, 0);
+    }
     this.gl.uniform1i(uCubeTexture, 4);
     this.gl.uniform1i(uTexture, 0);
+
+    
 
     // Handle camera matrix transformation
     const translateRMatrix = mTransform.translate(0, 0, this.globalState.cameraRadius); 
