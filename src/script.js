@@ -175,7 +175,7 @@ window.onload = function main() {
 
     // Model View
     cameraAngle.addEventListener("input",  () => {
-        globalState.cameraRotate = cameraAngle.value;
+        globalState.cameraRotation = cameraAngle.value;
         refresh();
     });
     
@@ -217,7 +217,7 @@ window.onload = function main() {
 
     // Single / Subtree View
     cameraAngleSs.addEventListener("input",  () => {
-        ssGlobalState.cameraRotate = cameraAngleSs.value;
+        ssGlobalState.cameraRotation = cameraAngleSs.value;
         refresh();
     });
     
@@ -393,7 +393,7 @@ function setProjectionType() {
 
 function setGlobalControls() {
     selectedProjection.value = globalState.projectionType;
-    cameraAngle.value = globalState.cameraRotate;
+    cameraAngle.value = globalState.cameraRotation;
     cameraRadius.value = globalState.cameraRadius;
     lightPositionX.value = globalState.lightPosition[0];
     lightPositionY.value = globalState.lightPosition[1];
@@ -404,6 +404,23 @@ function setGlobalControls() {
     }
     else {
         lightCheckbox.checked = true;
+        gl.clearColor(0.0, 0.0, 0.0, 0.8);
+    }
+}
+
+function setSsGlobalControls() {
+    selectedProjectionSs.value = ssGlobalState.projectionType;
+    cameraAngleSs.value = ssGlobalState.cameraRotation;
+    cameraRadiusSs.value = ssGlobalState.cameraRadius;
+    lightPositionXSs.value = ssGlobalState.lightPosition[0];
+    lightPositionYSs.value = ssGlobalState.lightPosition[1];
+    lightPositionZSs.value = ssGlobalState.lightPosition[2];
+    if (ssGlobalState.isLight == 0) {
+        lightCheckboxSs.checked = false;
+        gl.clearColor(0.75, 0.85, 0.8, 1.0);
+    }
+    else {
+        lightCheckboxSs.checked = true;
         gl.clearColor(0.0, 0.0, 0.0, 0.8);
     }
 }

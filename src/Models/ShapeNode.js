@@ -50,7 +50,7 @@ class ShapeNode {
         // Generate transformation matrix from stack
         stack.push("scale", this.objectScale);
         stack.push("rotate", this.objectRotate);
-        stack.push("translate", this.pivotTranslate);
+        stack.push("translate", this.objectTranslate);
 
         let transformationMatrix = stack.generateTransformationMatrix();
 
