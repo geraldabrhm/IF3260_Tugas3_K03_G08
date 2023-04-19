@@ -52,9 +52,9 @@ class ShapeNode {
 
     drawSingle(stack, glCanvas) {
         // Generate transformation matrix from stack
-        stack.push("scale", this.objectScale);
-        stack.push("rotate", this.objectRotate);
         stack.push("translate", this.objectTranslate);
+        stack.push("rotate", this.objectRotate);
+        stack.push("scale", this.objectScale);
 
         let transformationMatrix = stack.generateTransformationMatrix();
 
@@ -65,10 +65,10 @@ class ShapeNode {
         stack.pop3();
     }
 
-    drawWithSubtrees(stack, glCanvas) {
-        stack.push("scale", this.pivotScale);
-        stack.push("rotate", this.pivotRotate);
+    drawWithSubtrees(stack, glCanvas) { 
         stack.push("translate", this.pivotTranslate);
+        stack.push("rotate", this.pivotRotate);
+        stack.push("scale", this.pivotScale);
 
         this.drawSingle(stack, glCanvas);
         for (let i = 0; i < this.children.length; i++) {
