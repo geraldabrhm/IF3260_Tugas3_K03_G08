@@ -6,6 +6,7 @@ const ssgl = new WebGLCanvas(ssCanvas, ssGlobalState);
 
 // Model Control
 const selectedTextureType = document.getElementById("selectedTextureType");
+const selectedTextureTypeCustom = document.getElementById("selectedTextureTypeCustomS");
 const rotateX = document.getElementById("rotateX");
 const rotateY = document.getElementById("rotateY");
 const rotateZ = document.getElementById("rotateZ");
@@ -18,6 +19,7 @@ const scaleZ = document.getElementById("scaleZ");
 
 // Subtree Control
 const selectedTextureTypeSs = document.getElementById("selectedTextureTypeSs");
+const selectedTextureTypeSsCustom = document.getElementById("selectedTextureTypeSsCustomS");
 const rotateXsubtree = document.getElementById("rotateXsubtree");
 const rotateYsubtree = document.getElementById("rotateYsubtree");
 const rotateZsubtree = document.getElementById("rotateZsubtree");
@@ -30,6 +32,7 @@ const scaleZsubtree = document.getElementById("scaleZsubtree");
 
 // Single Control
 const selectedTextureTypeSingle = document.getElementById("selectedTextureTypeSingle");
+const selectedTextureTypeSingleCustom = document.getElementById("selectedTextureTypeSingleCustomS");
 const rotateXsingle = document.getElementById("rotateXsingle");
 const rotateYsingle = document.getElementById("rotateYsingle");
 const rotateZsingle = document.getElementById("rotateZsingle");
@@ -483,8 +486,28 @@ function setTextureTypeSingle() {
     refresh();
 }
 
+function setTextureTypeCustom() {
+    rootShapeNode.updateAllChildrenTextureCustom(parseInt(selectedTextureTypeCustom.value));
+    console.log(parseInt(selectedTextureTypeCustom.value));
+    refresh();
+}
+
+function setTextureTypeSsCustom() {
+    selectedShapeNode.updateAllChildrenTextureCustom(parseInt(selectedTextureTypeSsCustom.value));
+    console.log(parseInt(selectedTextureTypeCustom.value));
+
+    refresh();
+}
+
+function setTextureTypeSingleCustom() {
+    selectedShapeNode.textureIndex= parseInt(selectedTextureTypeSingleCustom.value);
+    console.log(selectedTextureTypeSingleCustom.value);
+
+    refresh();
+}
+
 function disableTextureTypeRoot() {
-    if (rootShapeNode.value === "Custom") {
+    if (rootShapeNode.texture === "custom") {
         const selectedTextureTypeCustom = document.querySelector("#selectedTextureTypeCustom");
         Array.from(selectedTextureTypeCustom.children, child => child.removeAttribute("disabled"));
     } else {
@@ -494,7 +517,7 @@ function disableTextureTypeRoot() {
 }
 
 function disableTextureTypeSs() {
-    if (selectedShapeNode.value === "Custom") {
+    if (selectedShapeNode.texture === "custom") {
         const selectedTextureTypeSsCustom = document.querySelector("#selectedTextureTypeSsCustom");
         Array.from(selectedTextureTypeSsCustom.children, child => child.removeAttribute("disabled"));
     } else {
@@ -504,7 +527,7 @@ function disableTextureTypeSs() {
 }
 
 function disableTextureTypeSingle() {
-    if (selectedShapeNode.value === "Custom") {
+    if (selectedShapeNode.texture === "custom") {
         const selectedTextureTypeSingleCustom = document.querySelector("#selectedTextureTypeSingleCustom");
         Array.from(selectedTextureTypeSingleCustom.children, child => child.removeAttribute("disabled"));
     } else {
