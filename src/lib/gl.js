@@ -196,12 +196,6 @@ class WebGLCanvas {
           this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
         }
       }
-
-      const uTexture = this.gl.getUniformLocation(this.program, "u_texture");
-      const uCubeTexture = this.gl.getUniformLocation(this.program, "u_cube_texture");
-
-      this.gl.uniform1i(uTexture, 0);
-      this.gl.uniform1i(uCubeTexture, 4);
     }
 
     // reflection texture
@@ -276,7 +270,7 @@ class WebGLCanvas {
      *
      * Renders the vertices to the canvas.
      */
-  render(vertices, normals, colors, matrix, type, texture) {
+  render(vertices, normals, colors, matrix, type) {
     // * Position buffer
     const bufferObject = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferObject);
@@ -364,15 +358,13 @@ class WebGLCanvas {
     const matrixUniLocation = this.gl.getUniformLocation(this.program, "uMatrix");
     const projectionMatrix = this.gl.getUniformLocation(this.program, "projectionMatrix");
     const viewTransformMatrix = this.gl.getUniformLocation(this.program, "viewTransformMatrix");
+    const uTexture = this.gl.getUniformLocation(this.program, "u_texture");
+    const uCubeTexture = this.gl.getUniformLocation(this.program, "u_cube_texture");
     const uUseTextureCustom = this.gl.getUniformLocation(this.program, "uUseTextureCustom");
 
-
-
-    if (texture == "custom" || texture == "") {
-      this.gl.uniform1i(uUseTextureCustom, 1);
-    } else {
-      this.gl.uniform1i(uUseTextureCustom, 0);
-    }
+    this.gl.uniform1i(uUseTextureCustom, 0);
+    this.gl.uniform1i(uCubeTexture, 4);
+    this.gl.uniform1i(uTexture, 0);
 
     // Handle camera matrix transformation
     const translateRMatrix = mTransform.translate(0, 0, this.globalState.cameraRadius); 
@@ -380,7 +372,6 @@ class WebGLCanvas {
     cameraMatrix = mat4mult(cameraMatrix, translateRMatrix);
     
     const viewTransform = mUtil.inverseMat4(cameraMatrix);
-    // console.info(viewTransform);
 
     this.gl.uniformMatrix4fv(viewTransformMatrix, false, flatten(viewTransform));
     this.gl.uniformMatrix4fv(matrixUniLocation, false, matrix);

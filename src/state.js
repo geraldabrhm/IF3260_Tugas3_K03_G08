@@ -20,6 +20,13 @@ function defaultTransformationState() {
 var rootShapeNode = null;
 var selectedShapeNode = null;
 
+var animationPlaying = false;
+var totalAnimationFrames = 0;
+var currentAnimationFrame = 1;
+const animationFramesBetween = 49;
+var animationInterval = null;
+const timeBetweenFrames = 20;
+
 var globalState = defaultGlobalState();
 var ssGlobalState = defaultGlobalState();
 
