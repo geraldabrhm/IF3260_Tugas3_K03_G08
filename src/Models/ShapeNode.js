@@ -35,6 +35,13 @@ class ShapeNode {
         }
     }
 
+    updateAllChildrenTexture(texture) {
+        this.texture = texture;
+        for (let i = 0; i < this.children.length; i++) {
+            this.children[i].updateAllChildrenTexture(texture);
+        }
+    }
+
     loadAnimationFrames(frames) {
         for (const frame of frames) {
             const f = new AnimationFrame(frame);
@@ -58,7 +65,7 @@ class ShapeNode {
 
         let transformationMatrix = stack.generateTransformationMatrix();
 
-        this.faces.forEach(face => face.draw(transformationMatrix, glCanvas));
+        this.faces.forEach(face => face.draw(transformationMatrix, glCanvas, this.texture));
 
         stack.pop3();
     }
@@ -81,6 +88,54 @@ class ShapeNode {
 
         stack.pop3();
         stack.pop3();
+    }
+
+    smoothenTransformation(curFrame, numOfFramesBetween) {
+        if (curFrame % (numOfFramesBetween+1) == 0) {
+            return this.animation[curFrame / (numOfFramesBetween+1)];
+        }
+        else {
+            let preFrame = this.animation[Math.floor(curFrame / (numOfFramesBetween+1))];
+            let postFrame = this.animation[Math.ceil(curFrame / (numOfFramesBetween+1))];
+
+            let order = curFrame % (numOfFramesBetween+1);
+
+            let translate = [
+                this.calculateSmoothValue(preFrame.translate[0], postFrame.translate[0], order, numOfFramesBetween+1),
+                this.calculateSmoothValue(preFrame.translate[1], postFrame.translate[1], order, numOfFramesBetween+1),
+                this.calculateSmoothValue(preFrame.translate[2], postFrame.translate[2], order, numOfFramesBetween+1),
+            ]
+
+            let rotate = [
+                this.calculateSmoothValue(preFrame.rotate[0], postFrame.rotate[0], order, numOfFramesBetween+1),
+                this.calculateSmoothValue(preFrame.rotate[1], postFrame.rotate[1], order, numOfFramesBetween+1),
+                this.calculateSmoothValue(preFrame.rotate[2], postFrame.rotate[2], order, numOfFramesBetween+1),
+            ]
+
+            let scale = [
+                this.calculateSmoothValue(preFrame.scale[0], postFrame.scale[0], order, numOfFramesBetween+1),
+                this.calculateSmoothValue(preFrame.scale[1], postFrame.scale[1], order, numOfFramesBetween+1),
+                this.calculateSmoothValue(preFrame.scale[2], postFrame.scale[2], order, numOfFramesBetween+1),
+            ]
+
+            return new AnimationFrame({
+                "translate": translate,
+                "rotate": rotate,
+                "scale": scale
+            });
+        }
+    }
+
+    calculateSmoothValue(valuePre, valuePost, order, total) {
+        return (valuePre * (total-order) + valuePost * order) / total
+    }
+
+    getMaximumNumberOfFrames() {
+        let max = this.animation.length;
+        for (let i = 0; i < this.children.length; i++) {
+            max = Math.max(max, this.children[i].getMaximumNumberOfFrames());
+        }
+        return max;
     }
 
     smoothenTransformation(curFrame, numOfFramesBetween) {

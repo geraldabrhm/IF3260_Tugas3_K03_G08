@@ -24,7 +24,7 @@
     "pivotTranslate": [0, 0, 0],
     "pivotRotate": [0, 0, 0],
     "pivotScale": [1, 1, 1],
-    "texture": "",
+    "texture": "custom",
     "animation": [
         {
             "translate": [0, 0, 0],
@@ -79,7 +79,7 @@
             "pivotTranslate": [0, 0, 0],
             "pivotRotate": [0, 0, 0],
             "pivotScale": [1, 1, 1],
-            "texture": "",
+            "texture": "custom",
             "animation": [
                 {
                     "translate": [0, 0, 0],
@@ -134,7 +134,7 @@
                     "pivotTranslate": [0, 0, 0],
                     "pivotRotate": [0, 0, 0],
                     "pivotScale": [1, 1, 1],
-                    "texture": "",
+                    "texture": "custom",
                     "animation": [
                         {
                             "translate": [0, 0, 0],
@@ -192,7 +192,7 @@
             "pivotTranslate": [0, 0, 0],
             "pivotRotate": [0, 0, 0],
             "pivotScale": [1, 1, 1],
-            "texture": "",
+            "texture": "custom",
             "animation": [
                 {
                     "translate": [0, 0, 0],
