@@ -108,18 +108,25 @@ class WebGLCanvas {
         if (uUseTextureCustom) {
           gl_FragColor = texture2D(u_texture, v_texcoord);
         } else if(uUseTextureBump) {
-          // vec3 worldNormal = texture2D(u_bump_texture, v_texcoord).rgb * 2.0 - 1.0;
-          // vec3 worldNormal = texture2D(u_texture, v_texcoord).rgb * 2.0 - 1.0;
+          float hllr = texture2D(u_texture, v_texcoord).r;
+          float hllg = texture2D(u_texture, v_texcoord).g;
+          float hllb = texture2D(u_texture, v_texcoord).b;
+          float hll = (hllr + hllg + hllb) / 3.0;
+          float hlrr = texture2D(u_texture, v_texcoord + vec2(dFdx(vec3(v_texcoord, 0.0)).x, 0.0)).r;
+          float hlrg = texture2D(u_texture, v_texcoord + vec2(dFdx(vec3(v_texcoord, 0.0)).x, 0.0)).g;
+          float hlrb = texture2D(u_texture, v_texcoord + vec2(dFdx(vec3(v_texcoord, 0.0)).x, 0.0)).b;
+          float hlr = (hlrr + hlrg + hlrb) / 3.0;
+          float hulr = texture2D(u_texture, v_texcoord + vec2(0.0, dFdy(vec3(v_texcoord, 0.0)).y)).r;
+          float hulg = texture2D(u_texture, v_texcoord + vec2(0.0, dFdy(vec3(v_texcoord, 0.0)).y)).g;
+          float hulb = texture2D(u_texture, v_texcoord + vec2(0.0, dFdy(vec3(v_texcoord, 0.0)).y)).b;
+          float hul = (hulr + hulg + hulb) / 3.0;
 
-          // mat3 TBN = mat3(dFdx(v_worldPosition), dFdy(v_worldPosition), vNormalBump);
+          vec3 surface_gradient = vec3(hlr - hll, hul - hll, 0.8);
+          vec3 perturb_normal = normalize(vNormal + surface_gradient);
+          vec3 bump_normal = perturb_normal;
 
-          // vec3 newNormal = normalize(TBN * worldNormal);
-          // vec3 eyeToSurfaceDir =  normalize(v_worldPosition - cameraPosition);
-          // vec3 reflection = reflect(eyeToSurfaceDir, newNormal);
-          // vec4 color = textureCube(u_cube_texture, reflection);
-
-          // gl_FragColor.rgb = color.rgb;
           gl_FragColor = texture2D(u_texture, v_texcoord);
+          gl_FragColor.rgb *= dot(bump_normal, normalize(uLightDirection));
         } else {
           vec3 worldNormal = normalize(vNormal);
           vec3 eyeToSurfaceDir =  normalize(v_worldPosition - cameraPosition);
@@ -128,7 +135,7 @@ class WebGLCanvas {
           gl_FragColor = textureCube(u_cube_texture, reflection);
         }
         float light = dot(vNormal, normalize(uLightDirection));
-        if (uUseLighting) {
+        if (uUseLighting && !uUseTextureBump) {
           gl_FragColor.rgb *= light;
         }
       }
