@@ -23,9 +23,9 @@ var selectedShapeNode = null;
 var animationPlaying = false;
 var totalAnimationFrames = 0;
 var currentAnimationFrame = 1;
-const animationFramesBetween = 49;
+const animationFramesBetween = 29;
 var animationInterval = null;
-const timeBetweenFrames = 20;
+const timeBetweenFrames = 30;
 
 var globalState = defaultGlobalState();
 var ssGlobalState = defaultGlobalState();
