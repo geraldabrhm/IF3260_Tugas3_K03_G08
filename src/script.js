@@ -677,13 +677,13 @@ function setSsGlobalControls() {
 }
 
 function resetView() {
-    globalState = defaultGlobalState();
+    resetToDefaultGlobalState(globalState);
     setGlobalControls();
     refresh();
 }
 
 function resetSsView() {
-    ssGlobalState = defaultGlobalState();
+    resetToDefaultGlobalState(ssGlobalState);
     setSsGlobalControls();
     refresh();
 }

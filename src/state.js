@@ -17,6 +17,15 @@ function defaultTransformationState() {
     };
 }
 
+function resetToDefaultGlobalState(state) {
+    state.projectionType = "perspective";
+    state.cameraRadius = 0;
+    state.cameraRotation = 0;
+    state.lightPosition = [1, 1, -1];
+    state.isLight = 0;
+    state.viewType = "subtree";
+}
+
 var rootShapeNode = null;
 var selectedShapeNode = null;
 
