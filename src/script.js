@@ -323,7 +323,7 @@ function exportShape() {
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = "test.json";
+    link.download = "3d-architecture-model.json";
     document.body.appendChild(link);
     link.click();
 
