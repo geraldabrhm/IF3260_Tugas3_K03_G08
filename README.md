@@ -43,7 +43,7 @@ The program was written in JavaScript, HTML, and CSS.
 
     `git clone https://github.com/geraldabrhm/IF3260_Tugas3_K03_G08.git`
 
-2. Open the 'index.html' file for image mapping and '.html' for bum mapping which located in 'src' folder and run in your browser
+2. Open the 'index.html' file which located in 'src' folder and run in your browser
 
 3. Or use the Live Server extension in Visual Studio Code to avoid cross origin error in loading the texture
 
@@ -62,10 +62,10 @@ The 3D WebGL Articulated Model was made using an interface whose input and outpu
 9. Camera Radius: to zoom in or zoom out the camera view which affects to the size of the objects
 10. Light Position: to adjust the position of the light for shading feature
 11. Light Shader: to enable color shading to objects
-12. Reset view: to return objects to their default settings
+12. Reset view: to set objects to their default settings
 13. Export: to export file and save it into the computer
 14. Import/Choose File: to import and load file
-15. Help: to see usage guide of the program
+15. Help: to see the usage guide of the program
 
 
 ## Project Status
