@@ -56,7 +56,7 @@ class WebGLCanvas {
       void main()
       {
         fragColor = vertColor;
-        gl_Position = viewTransformMatrix * projectionMatrix * uMatrix * vec4(vertPosition);
+        gl_Position = projectionMatrix * viewTransformMatrix * uMatrix * vec4(vertPosition);
         vNormal = aNormal;
         v_texcoord = a_texcoord;
         v_worldPosition = (uMatrix * vec4(vertPosition)).xyz;
@@ -399,7 +399,7 @@ class WebGLCanvas {
     
 
     // Handle camera matrix transformation
-    const translateRMatrix = mTransform.translate(0, 0, this.globalState.cameraRadius); 
+    const translateRMatrix = mTransform.translate(0, 0, -this.globalState.cameraRadius); 
     cameraMatrix = mTransform.rotateY(degToRad(this.globalState.cameraRotation));
     cameraMatrix = mat4mult(cameraMatrix, translateRMatrix);
     
