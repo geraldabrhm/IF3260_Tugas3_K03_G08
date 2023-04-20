@@ -12,28 +12,40 @@
         <a href="index.html">Back</a>
 
         <h2>Model Controller</h2>
-        <p>Transformasi dapat dilakukan dengan memilih model terlebih dahulu dari dropdown. Transformasi yang dapat
-            dilakukan adalah rotasi, translasi, dan scale terhadap sumbu X, Y, maupun Z.
+        <p>Model controller digunakan untuk memodifikasi keseluruhan model (model control), subtree (subtree control), atau single(single control). Parameter yang dapat diubah adalah tekstur, rotasi, translasi, dan scale.
         </p>
         
-        <h3>a. Rotasi</h3>
+        <h3>a. Tekstur</h3>
+        <p>Parameter tekstur dapat diatur dengan memilih texture map pada selector berlabel <strong>Texture</strong>
+        Jika memilih custom, maka akan muncul piihan teksture yang ingin digunakan</p>
+
+        <h3>b. Rotasi</h3>
         <p>Parameter rotasi dapat diatur dengan slider berlabel <strong>Rotasi</strong>. Rotasi dilakukan dengan titik tengah model
             sebagai pusat rotasi.
         </p>
-        <h3>b. Translasi</h3>
+
+        <h3>c. Translasi</h3>
         <p>Parameter translasi dapat diatur dengan slider berlabel <strong>Translasi</strong>.</p>
-        <h3>c. Scale</h3>
+        <h3>d. Scale</h3>
         <p>Parameter scale dapat diatur dengan slider berlabel <strong>Scale</strong>.</p>
+
+        <h2>Animation Controller</h2>
+        <p>Animation controller digunakan untuk menjalankan dan menjeda animasi mode.
+            Tekan tombol "Play" untuk memulai animasi dan tekan tombol "Pause" untuk menjeda animasi.
+        </p>
 
         <h2>Global Controller</h2>
         <p>Menu pengaturan di Global Controller digunakan untuk mengatur konfigurasi view secara keseluruhan
             meliputi jenis proyeksi, camera, dan lighting.
         </p>
 
-        <p>Tombol <strong>Reset View</strong> digunakan untuk mengembalikan seluruh konfigurasi di Global Controller ke 
-            default value. Tombol <strong>Clear Canvas</strong> digunakan untuk menghapus seluruh model di dalam canvas.
+        <p>
+            Terdapat dua view yaitu <strong>Model View</strong> dan <strong>Single / Subtree View</strong>.
         </p>
-    
+
+        <p>Tombol <strong>Reset View</strong> digunakan untuk mengembalikan seluruh konfigurasi pada view ke 
+            default value. 
+        </p>
         <h3>a. Proyeksi</h3>
         <p>Jenis proyeksi dapat diatur dengan memilih dari dropdown berlabel <strong>Select projection type</strong>. 
             Jenis proyeksi yang tersedia adalah Perspective (default), Oblique, dan Orthographic.
