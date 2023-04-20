@@ -654,7 +654,7 @@
                     "objectTranslate": [0, 0, 0],
                     "objectRotate": [0, 0, 0],
                     "objectScale": [1, 1, 1],
-                    "pivotTranslate": [-0.2, 0, 0],
+                    "pivotTranslate": [-0.3, 0, 0],
                     "pivotRotate": [0, 0, 0],
                     "pivotScale": [1, 1, 1],
                     "texture": "custom",
