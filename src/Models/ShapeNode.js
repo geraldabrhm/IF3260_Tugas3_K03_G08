@@ -13,6 +13,8 @@ class ShapeNode {
         this.pivotScale = obj.pivotScale;
         this.texture = obj.texture;
         this.textureIndex = obj.textureIndex? obj.textureIndex : 0;
+        this.bumpMap = obj.bumpMap;
+        this.bumpIndex = obj.bumpIndex ? obj.bumpIndex : 0;
 
         this.animation = [];
         this.loadAnimationFrames(obj.animation);
@@ -47,6 +49,13 @@ class ShapeNode {
         this.textureIndex = Index;
         for (let i = 0; i < this.children.length; i++) {
             this.children[i].updateAllChildrenTextureCustom(Index);
+        }
+    }
+
+    updateAllChildrenTextureBump(Index) {
+        this.bumpIndex = Index; // ! TEMPORARY
+        for (let i = 0; i < this.children.length; i++) {
+            this.children[i].updateAllChildrenTextureBump(Index);
         }
     }
 

@@ -7,6 +7,7 @@ const ssgl = new WebGLCanvas(ssCanvas, ssGlobalState);
 // Model Control
 const selectedTextureType = document.getElementById("selectedTextureType");
 const selectedTextureTypeCustom = document.getElementById("selectedTextureTypeCustomS");
+const selectedTextureTypeBump = document.getElementById("selectedTextureTypeBumpS");
 const rotateX = document.getElementById("rotateX");
 const rotateY = document.getElementById("rotateY");
 const rotateZ = document.getElementById("rotateZ");
@@ -20,6 +21,7 @@ const scaleZ = document.getElementById("scaleZ");
 // Subtree Control
 const selectedTextureTypeSs = document.getElementById("selectedTextureTypeSs");
 const selectedTextureTypeSsCustom = document.getElementById("selectedTextureTypeSsCustomS");
+const selectedTextureTypeSsBump = document.getElementById("selectedTextureTypeSsBumpS");
 const rotateXsubtree = document.getElementById("rotateXsubtree");
 const rotateYsubtree = document.getElementById("rotateYsubtree");
 const rotateZsubtree = document.getElementById("rotateZsubtree");
@@ -33,6 +35,7 @@ const scaleZsubtree = document.getElementById("scaleZsubtree");
 // Single Control
 const selectedTextureTypeSingle = document.getElementById("selectedTextureTypeSingle");
 const selectedTextureTypeSingleCustom = document.getElementById("selectedTextureTypeSingleCustomS");
+const selectedTextureTypeSingleBump = document.getElementById("selectedTextureTypeSingleBumpS");
 const rotateXsingle = document.getElementById("rotateXsingle");
 const rotateYsingle = document.getElementById("rotateYsingle");
 const rotateZsingle = document.getElementById("rotateZsingle");
@@ -398,6 +401,7 @@ function setupModelControls() {
     selectedTextureType.removeAttribute("disabled");
 
     disableTextureTypeRoot();
+    disableBumpTypeRoot();
 
     selectedTextureType.value = rootShapeNode.texture;
     rotateX.value = rootShapeNode.pivotRotate[0];
@@ -419,6 +423,7 @@ function setupSubtreeControls() {
     selectedTextureTypeSs.removeAttribute("disabled");
 
     disableTextureTypeSs();
+    disableBumpTypeSs();
 
     selectedTextureTypeSs.value = selectedShapeNode.texture;
     rotateXsubtree.value = selectedShapeNode.pivotRotate[0];
@@ -440,6 +445,7 @@ function setupSingleControls() {
     selectedTextureTypeSingle.removeAttribute("disabled");
 
     disableTextureTypeSingle();
+    disableBumpTypeSingle();
 
     selectedTextureTypeSingle.value = selectedShapeNode.texture;
     rotateXsingle.value = selectedShapeNode.objectRotate[0];
@@ -475,6 +481,9 @@ function setTextureType() {
     disableTextureTypeRoot();
     disableTextureTypeSs();
     disableTextureTypeSingle();
+    disableBumpTypeRoot();
+    disableBumpTypeSs();
+    disableBumpTypeSingle();
     refresh();
 }
 
@@ -512,6 +521,27 @@ function setTextureTypeSingleCustom() {
     refresh();
 }
 
+// Set displacement map
+function setTextureTypeBump() {
+    rootShapeNode.updateAllChildrenTextureBump(parseInt(selectedTextureTypeBump.value));
+    console.log(parseInt(selectedTextureTypeCustom.value));
+    refresh();
+}
+
+function setTextureTypeSsBump() {
+    selectedShapeNode.updateAllChildrenTextureBump(parseInt(selectedTextureTypeSsBump.value));
+    console.log(parseInt(selectedTextureTypeCustom.value));
+
+    refresh();
+}
+
+function setTextureTypeSingleBump() {
+    selectedShapeNode.textureIndex= parseInt(selectedTextureTypeSingleBump.value);
+    console.log(selectedTextureTypeSingleCustom.value);
+
+    refresh();
+}
+
 function disableTextureTypeRoot() {
     if (rootShapeNode.texture === "custom") {
         const selectedTextureTypeCustom = document.querySelector("#selectedTextureTypeCustom");
@@ -539,6 +569,34 @@ function disableTextureTypeSingle() {
     } else {
         const selectedTextureTypeSingleCustom = document.querySelector("#selectedTextureTypeSingleCustom");
         Array.from(selectedTextureTypeSingleCustom.children, child => child.setAttribute("disabled", true));
+    }
+}
+
+// Disable texture type for bump map
+function disableBumpTypeRoot() {
+    const selectedTextureTypeBump = document.querySelector("#selectedTextureTypeBump");
+    if (rootShapeNode.texture === "bump") {
+        Array.from(selectedTextureTypeBump.children, child => child.removeAttribute("disabled"));
+    } else {
+        Array.from(selectedTextureTypeBump.children, child => child.setAttribute("disabled", true));
+    }
+}
+
+function disableBumpTypeSs() {
+    const selectedTextureTypeSsBump = document.querySelector("#selectedTextureTypeSsBump");
+    if (selectedShapeNode.texture === "bump") {
+        Array.from(selectedTextureTypeSsBump.children, child => child.removeAttribute("disabled"));
+    } else {
+        Array.from(selectedTextureTypeSsBump.children, child => child.setAttribute("disabled", true));
+    }
+}
+
+function disableBumpTypeSingle() {
+    const selectedTextureTypeSingleBump = document.querySelector("#selectedTextureTypeSingleBump");
+    if (selectedShapeNode.texture === "bump") {
+        Array.from(selectedTextureTypeSingleBump.children, child => child.removeAttribute("disabled"));
+    } else {
+        Array.from(selectedTextureTypeSingleBump.children, child => child.setAttribute("disabled", true));
     }
 }
 

@@ -7,6 +7,17 @@ class WebGLCanvas {
     this.gl = WebGLUtils.setupWebGL(canvas, {
       preserveDrawingBuffer: true,
     });
+    // this.gl.getExtension('OES_standard_derivatives');
+    // const derivativeExt = this.gl.getExtension('OES_standard_derivatives');
+    // this.gl.enable(derivativeExt);
+    
+    // const supportedExt = this.gl.getSupportedExtensions();
+    // console.log(supportedExt);
+    var ext = this.gl.getExtension("OES_standard_derivatives");
+
+    if (!ext) {
+      console.error("Extension not found");
+    }
 
     if (!this.gl) {
       alert("WebGL isn't available");
@@ -39,25 +50,30 @@ class WebGLCanvas {
       
       attribute vec4 vertPosition;
       attribute vec4 vertColor;
+      attribute vec2 a_texcoord;
+      attribute vec3 aNormal;
+
       varying vec4 fragColor;
+      varying vec2 v_texcoord;
+      varying vec3 vNormal;
+      varying vec3 vNormalBump;
+
       uniform mat4 uMatrix;
       uniform mat4 projectionMatrix;
       uniform mat4 viewTransformMatrix;
 
-      attribute vec3 aNormal;
-      varying vec3 vNormal;
-
-      attribute vec2 a_texcoord;
-      varying vec2 v_texcoord;
       varying vec3 v_worldPosition;
-
       varying vec3 cameraPosition;
-      
+
       void main()
       {
         fragColor = vertColor;
         gl_Position = projectionMatrix * viewTransformMatrix * uMatrix * vec4(vertPosition);
         vNormal = aNormal;
+        
+        vec3 transformedNormal = vec3(uMatrix * vec4(aNormal, 0.0));
+        vNormalBump = normalize(transformedNormal);
+
         v_texcoord = a_texcoord;
         v_worldPosition = (uMatrix * vec4(vertPosition)).xyz;
 
@@ -67,17 +83,20 @@ class WebGLCanvas {
     this.gl.shaderSource(vertexShader, vertexShaderText);
 
     const fragmentShaderText = `
+      #extension GL_OES_standard_derivatives : enable
       precision mediump float;
-
+      
+      varying vec4 fragColor;
+      varying vec2 v_texcoord;
+      varying vec3 vNormal;
+      varying vec3 vNormalBump;
+      
       uniform vec3 uLightDirection;
       uniform bool uUseLighting;
       uniform bool uUseTextureCustom;
-      
-      varying vec4 fragColor;
-      varying vec3 vNormal;
-
-      varying vec2 v_texcoord;
+      uniform bool uUseTextureBump;
       uniform sampler2D u_texture;
+      uniform sampler2D u_bump_texture;
       uniform samplerCube u_cube_texture;
 
       varying vec3 v_worldPosition;
@@ -87,6 +106,17 @@ class WebGLCanvas {
       {
         if (uUseTextureCustom) {
           gl_FragColor = texture2D(u_texture, v_texcoord);
+        } else if(uUseTextureBump) {
+          vec3 worldNormal = texture2D(u_bump_texture, v_texcoord).rgb * 2.0 - 1.0;
+
+          mat3 TBN = mat3(dFdx(v_worldPosition), dFdy(v_worldPosition), vNormalBump);
+
+          vec3 newNormal = normalize(TBN * worldNormal);
+          vec3 eyeToSurfaceDir =  normalize(v_worldPosition - cameraPosition);
+          vec3 reflection = reflect(eyeToSurfaceDir, newNormal);
+          vec4 color = textureCube(u_cube_texture, reflection);
+
+          gl_FragColor.rgb = color.rgb;
         } else {
           vec3 worldNormal = normalize(vNormal);
           vec3 eyeToSurfaceDir =  normalize(v_worldPosition - cameraPosition);
@@ -254,6 +284,9 @@ class WebGLCanvas {
     });
     this.gl.generateMipmap(this.gl.TEXTURE_CUBE_MAP);
     this.gl.texParameteri(this.gl.TEXTURE_CUBE_MAP, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
+
+    // bump texture
+    // TODO create bump texture
   }
 
   loadImage(src) {
@@ -386,6 +419,7 @@ class WebGLCanvas {
     const uTexture = this.gl.getUniformLocation(this.program, "u_texture");
     const uCubeTexture = this.gl.getUniformLocation(this.program, "u_cube_texture");
     const uUseTextureCustom = this.gl.getUniformLocation(this.program, "uUseTextureCustom");
+    const uUseTextureBump = this.gl.getUniformLocation(this.program, "uUseTextureBump");
 
     if (texture == "custom") 
     {
@@ -393,6 +427,14 @@ class WebGLCanvas {
     } else {
       this.gl.uniform1i(uUseTextureCustom, 0);
     }
+
+    if (texture == "bump")
+    {
+      this.gl.uniform1i(uUseTextureBump, 1);
+    } else {
+      this.gl.uniform1i(uUseTextureBump, 0);
+    }
+
     this.gl.uniform1i(uCubeTexture, 4);
     this.gl.uniform1i(uTexture, textureIndex);
 
