@@ -523,21 +523,31 @@ function setTextureTypeSingleCustom() {
 
 // Set displacement map
 function setTextureTypeBump() {
-    rootShapeNode.updateAllChildrenTextureBump(parseInt(selectedTextureTypeBump.value));
-    console.log(parseInt(selectedTextureTypeCustom.value));
+    // rootShapeNode.updateAllChildrenTextureBump(parseInt(selectedTextureTypeBump.value));
+    // console.log(parseInt(selectedTextureTypeBump.value));
+
+    rootShapeNode.updateAllChildrenTextureCustom(parseInt(selectedTextureTypeBump.value));
+    console.log(parseInt(selectedTextureTypeBump.value));
+
     refresh();
 }
 
 function setTextureTypeSsBump() {
-    selectedShapeNode.updateAllChildrenTextureBump(parseInt(selectedTextureTypeSsBump.value));
-    console.log(parseInt(selectedTextureTypeCustom.value));
+    // selectedShapeNode.updateAllChildrenTextureBump(parseInt(selectedTextureTypeSsBump.value));
+    // console.log(parseInt(selectedTextureTypeSsBump.value));
+
+    selectedShapeNode.updateAllChildrenTextureCustom(parseInt(selectedTextureTypeSsBump.value));
+    console.log(parseInt(selectedTextureTypeSsBump.value));
 
     refresh();
 }
 
 function setTextureTypeSingleBump() {
+    // selectedShapeNode.bumpIndex= parseInt(selectedTextureTypeSingleBump.value);
+    // console.log(selectedTextureTypeSingleBump.value);
+
     selectedShapeNode.textureIndex= parseInt(selectedTextureTypeSingleBump.value);
-    console.log(selectedTextureTypeSingleCustom.value);
+    console.log(selectedTextureTypeSingleBump.value);
 
     refresh();
 }

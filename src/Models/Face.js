@@ -35,7 +35,7 @@ class Face {
     return normalMat;
   }
 
-  draw(matrixTransformation, glCanvas, texture, textureIndex) {
-      glCanvas.render(this.vertices, this.generateNormal(matrixTransformation), this.colors, matrixTransformation, glCanvas.gl.TRIANGLE_FAN, texture, textureIndex);
+  draw(matrixTransformation, glCanvas, texture, textureIndex, bumpTextureIndex) {
+      glCanvas.render(this.vertices, this.generateNormal(matrixTransformation), this.colors, matrixTransformation, glCanvas.gl.TRIANGLE_FAN, texture, textureIndex, bumpTextureIndex);
   }
 }

@@ -4,6 +4,7 @@ class WebGLCanvas {
      * Initializes the WebGL context.
      */
     this.textures = [];
+    this.bumpTextures = [];
     this.gl = WebGLUtils.setupWebGL(canvas, {
       preserveDrawingBuffer: true,
     });
@@ -107,16 +108,18 @@ class WebGLCanvas {
         if (uUseTextureCustom) {
           gl_FragColor = texture2D(u_texture, v_texcoord);
         } else if(uUseTextureBump) {
-          vec3 worldNormal = texture2D(u_bump_texture, v_texcoord).rgb * 2.0 - 1.0;
+          // vec3 worldNormal = texture2D(u_bump_texture, v_texcoord).rgb * 2.0 - 1.0;
+          // vec3 worldNormal = texture2D(u_texture, v_texcoord).rgb * 2.0 - 1.0;
 
-          mat3 TBN = mat3(dFdx(v_worldPosition), dFdy(v_worldPosition), vNormalBump);
+          // mat3 TBN = mat3(dFdx(v_worldPosition), dFdy(v_worldPosition), vNormalBump);
 
-          vec3 newNormal = normalize(TBN * worldNormal);
-          vec3 eyeToSurfaceDir =  normalize(v_worldPosition - cameraPosition);
-          vec3 reflection = reflect(eyeToSurfaceDir, newNormal);
-          vec4 color = textureCube(u_cube_texture, reflection);
+          // vec3 newNormal = normalize(TBN * worldNormal);
+          // vec3 eyeToSurfaceDir =  normalize(v_worldPosition - cameraPosition);
+          // vec3 reflection = reflect(eyeToSurfaceDir, newNormal);
+          // vec4 color = textureCube(u_cube_texture, reflection);
 
-          gl_FragColor.rgb = color.rgb;
+          // gl_FragColor.rgb = color.rgb;
+          gl_FragColor = texture2D(u_texture, v_texcoord);
         } else {
           vec3 worldNormal = normalize(vNormal);
           vec3 eyeToSurfaceDir =  normalize(v_worldPosition - cameraPosition);
@@ -191,6 +194,7 @@ class WebGLCanvas {
     {
       const texture = this.gl.createTexture();
       this.gl.activeTexture(this.gl.TEXTURE0 + i);
+      // console.info(`Custom: ${this.gl.TEXTURE0 + i}`); // ! Debug
       this.textures.push(texture);
       this.gl.bindTexture(this.gl.TEXTURE_2D, this.textures[i]);
 
@@ -215,6 +219,7 @@ class WebGLCanvas {
       image.i = i
       image.onload = () => {
         this.gl.activeTexture(this.gl.TEXTURE0 + image.i);
+        // console.info(`Custom, image onload: ${this.gl.TEXTURE0 + image.i}`) // ! Debug
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.textures[image.i]);
         this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
         if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
@@ -232,6 +237,7 @@ class WebGLCanvas {
     const reflectionTexture = this.gl.createTexture();
 
     this.gl.activeTexture(this.gl.TEXTURE0 + this.images.length);
+    // console.info(`Reflective: ${this.gl.TEXTURE0 + this.images.length}`) // ! Debug
     this.textures.push(reflectionTexture);
     this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.textures[this.images.length]);
 
@@ -277,6 +283,7 @@ class WebGLCanvas {
       image.src = url;
       image.onload = () => {
         this.gl.activeTexture(this.gl.TEXTURE0 + this.images.length);
+        // console.info(`Reflective onload: ${this.gl.TEXTURE0 + this.images.length}`); // ! Debug
         this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.textures[this.images.length]);
         this.gl.texImage2D(target, level, internalFormat, format, type, image);
         this.gl.generateMipmap(this.gl.TEXTURE_CUBE_MAP);
@@ -286,7 +293,56 @@ class WebGLCanvas {
     this.gl.texParameteri(this.gl.TEXTURE_CUBE_MAP, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
 
     // bump texture
-    // TODO create bump texture
+    this.bumpMapImages = 
+    [
+      "Images/Displacement1.jpg",
+      "Images/Displacement2.jpg",
+      "Images/Displacement3.jpg",
+      "Images/Displacement4.jpg",
+    ];
+
+    for (var i = 0; i < this.bumpMapImages.length; i++) 
+    {
+      const texture = this.gl.createTexture();
+      this.gl.activeTexture(this.gl.TEXTURE0 + i + this.images.length + 1);
+      // console.info(`Bump: ${this.gl.TEXTURE0 + i + this.images.length + 1}`); // ! Debug
+      this.bumpTextures.push(texture);
+      this.gl.bindTexture(this.gl.TEXTURE_2D, this.bumpTextures[i]);
+
+      this.gl.texImage2D(
+        this.gl.TEXTURE_2D,
+        0,
+        this.gl.RGBA,
+        1,
+        1,
+        0,
+        this.gl.RGBA,
+        this.gl.UNSIGNED_BYTE,
+        new Uint8Array([0, 0, 255, 255])
+      );
+
+      function isPowerOf2(value) {
+        return (value & (value - 1)) == 0;
+      }
+
+      const imageForBumpMap = new Image();
+      imageForBumpMap.src = this.bumpMapImages[i];
+      imageForBumpMap.i = i
+      imageForBumpMap.onload = () => {
+        this.gl.activeTexture(this.gl.TEXTURE0 + imageForBumpMap.i + this.images.length + 1);
+        // console.info(`Bump onload: ${this.gl.TEXTURE0 + imageForBumpMap.i + this.images.length + 1}`); // ! Debug
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.bumpTextures[imageForBumpMap.i]);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, imageForBumpMap);
+        if (isPowerOf2(imageForBumpMap.width) && isPowerOf2(imageForBumpMap.height)) {
+          this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        } else {
+          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+          this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        }
+      }
+    }
   }
 
   loadImage(src) {
@@ -303,7 +359,7 @@ class WebGLCanvas {
      *
      * Renders the vertices to the canvas.
      */
-  render(vertices, normals, colors, matrix, type, texture, textureIndex) {
+  render(vertices, normals, colors, matrix, type, texture, textureIndex, bumpTextureIndex) {
     // * Position buffer
     const bufferObject = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, bufferObject);
@@ -380,7 +436,7 @@ class WebGLCanvas {
       }
     }
 
-    console.log(maxIndex)
+    // console.log(maxIndex); // ! Debug
 
     for (let i = 0; i < vertices.length; i++) {
       if (maxIndex === 0) {
@@ -417,6 +473,7 @@ class WebGLCanvas {
     const projectionMatrix = this.gl.getUniformLocation(this.program, "projectionMatrix");
     const viewTransformMatrix = this.gl.getUniformLocation(this.program, "viewTransformMatrix");
     const uTexture = this.gl.getUniformLocation(this.program, "u_texture");
+    const uBumpTexture = this.gl.getUniformLocation(this.program, "u_bump_texture");
     const uCubeTexture = this.gl.getUniformLocation(this.program, "u_cube_texture");
     const uUseTextureCustom = this.gl.getUniformLocation(this.program, "uUseTextureCustom");
     const uUseTextureBump = this.gl.getUniformLocation(this.program, "uUseTextureBump");
@@ -424,6 +481,7 @@ class WebGLCanvas {
     if (texture == "custom") 
     {
       this.gl.uniform1i(uUseTextureCustom, 1);
+      this.gl.uniform1i(uUseTextureBump, 0);
     } else {
       this.gl.uniform1i(uUseTextureCustom, 0);
     }
@@ -431,12 +489,16 @@ class WebGLCanvas {
     if (texture == "bump")
     {
       this.gl.uniform1i(uUseTextureBump, 1);
+      this.gl.uniform1i(uUseTextureCustom, 0);
     } else {
       this.gl.uniform1i(uUseTextureBump, 0);
     }
 
+    // console.info(`The bump texture index: ${bumpTextureIndex}`) // ! Debug
+    // console.info(`The texture index: ${textureIndex}`) // ! Debug
     this.gl.uniform1i(uCubeTexture, 4);
     this.gl.uniform1i(uTexture, textureIndex);
+    // this.gl.uniform1i(uBumpTexture, bumpTextureIndex);
 
     
 

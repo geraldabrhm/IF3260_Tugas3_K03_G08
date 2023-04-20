@@ -13,8 +13,7 @@ class ShapeNode {
         this.pivotScale = obj.pivotScale;
         this.texture = obj.texture;
         this.textureIndex = obj.textureIndex? obj.textureIndex : 0;
-        this.bumpMap = obj.bumpMap;
-        this.bumpIndex = obj.bumpIndex ? obj.bumpIndex : 0;
+        // this.bumpIndex = obj.bumpIndex ? obj.bumpIndex : 0;
 
         this.animation = [];
         this.loadAnimationFrames(obj.animation);
@@ -52,12 +51,13 @@ class ShapeNode {
         }
     }
 
-    updateAllChildrenTextureBump(Index) {
-        this.bumpIndex = Index; // ! TEMPORARY
-        for (let i = 0; i < this.children.length; i++) {
-            this.children[i].updateAllChildrenTextureBump(Index);
-        }
-    }
+    // ! Unused
+    // updateAllChildrenTextureBump(Index) {
+    //     this.bumpIndex = Index; 
+    //     for (let i = 0; i < this.children.length; i++) {
+    //         this.children[i].updateAllChildrenTextureBump(Index);
+    //     }
+    // }
 
     loadAnimationFrames(frames) {
         for (const frame of frames) {
@@ -82,7 +82,7 @@ class ShapeNode {
 
         let transformationMatrix = stack.generateTransformationMatrix();
 
-        this.faces.forEach(face => face.draw(transformationMatrix, glCanvas, this.texture, this.textureIndex));
+        this.faces.forEach(face => face.draw(transformationMatrix, glCanvas, this.texture, this.textureIndex, this.bumpIndex));
 
         stack.pop3();
     }
