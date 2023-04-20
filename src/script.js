@@ -484,6 +484,16 @@ function setTextureType() {
     disableBumpTypeRoot();
     disableBumpTypeSs();
     disableBumpTypeSingle();
+
+    if(selectedTextureType.value == "custom") {
+        selectedTextureTypeCustom.removeAttribute("disabled");
+        selectedTextureTypeBump.setAttribute("disabled", "true");
+        setTextureTypeCustom();
+    } else if (selectedTextureType.value == "bump") {
+        selectedTextureTypeBump.removeAttribute("disabled");
+        selectedTextureTypeCustom.setAttribute("disabled", "true");
+        setTextureTypeBump();
+    }
     refresh();
 }
 
@@ -492,12 +502,34 @@ function setTextureTypeSs() {
     selectedTextureTypeSingle.value = selectedTextureTypeSs.value;
     disableTextureTypeSs();
     disableTextureTypeSingle();
+
+    if(selectedTextureTypeSs.value == "custom") {
+        selectedTextureTypeSsCustom.removeAttribute("disabled");
+        selectedTextureTypeSsBump.setAttribute("disabled", "true");
+        setTextureTypeSsCustom();
+    } else if (selectedTextureTypeSs.value == "bump") {
+        selectedTextureTypeSsBump.removeAttribute("disabled");
+        selectedTextureTypeSsCustom.setAttribute("disabled", "true");
+        setTextureTypeSsBump();
+    }
+
     refresh();
 }
 
 function setTextureTypeSingle() {
     selectedShapeNode.texture = selectedTextureTypeSingle.value;
     disableTextureTypeSingle();
+
+    if(selectedTextureTypeSingle.value == "custom") {
+        selectedTextureTypeSingleCustom.removeAttribute("disabled");
+        selectedTextureTypeSingleBump.setAttribute("disabled", "true");
+        setTextureTypeSingleCustom();
+    } else if (selectedTextureTypeSingle.value == "bump") {
+        selectedTextureTypeSingleBump.removeAttribute("disabled");
+        selectedTextureTypeSingleCustom.setAttribute("disabled", "true");
+        setTextureTypeSingleBump();
+    }
+    
     refresh();
 }
 
