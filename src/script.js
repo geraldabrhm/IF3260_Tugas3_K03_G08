@@ -470,13 +470,19 @@ function setViewTypeSs() {
 
 function setTextureType() {
     rootShapeNode.updateAllChildrenTexture(selectedTextureType.value);
+    selectedTextureTypeSs.value = selectedTextureType.value;
+    selectedTextureTypeSingle.value = selectedTextureType.value;
     disableTextureTypeRoot();
+    disableTextureTypeSs();
+    disableTextureTypeSingle();
     refresh();
 }
 
 function setTextureTypeSs() {
     selectedShapeNode.updateAllChildrenTexture(selectedTextureTypeSs.value);
+    selectedTextureTypeSingle.value = selectedTextureTypeSs.value;
     disableTextureTypeSs();
+    disableTextureTypeSingle();
     refresh();
 }
 
