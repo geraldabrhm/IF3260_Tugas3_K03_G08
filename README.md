@@ -27,7 +27,7 @@ This project was created by:
 
 
 ## General Information
-3D WebGL Articulated Model is a website that contains four 3D articulated models that is created to simulate transormation and projection on the articulated models. It is created using WebGL without any kind of libraries or frameworks. This website consists of several buttons, sliders, and dropdowns to carry out commands and run existing features. It also has two canvases where user models are drawn and modified. Some of the functionalities it has are object transformation (translation, rotation, scaling), projection (orthographic, oblique, perspective), camera view changes (angle and zoom in/out), reset, shading, texture mapping, animation, and save/load file. Other than that, the program is able to manage model control in 3 kind of ways, which are through general view control, single component view control, and subtree component view control.
+3D WebGL Articulated Model is a website that contains four 3D articulated models that is created to simulate transormation and projection on the articulated models. It is created using WebGL without any kind of libraries or frameworks. This website consists of several buttons, sliders, and dropdowns to carry out commands and run existing features. It also has two canvases (model canvas and single/subtree canvas) where user models are drawn and modified. Some of the functionalities it has are object transformation (translation, rotation, scaling), projection (orthographic, oblique, perspective), camera view changes (angle and zoom in/out), reset, shading, texture mapping, animation, and save/load file. Other than that, the program is able to manage model control in 3 kind of ways, which are through general view control, single component view control, and subtree component view control.
 
 
 ## Technologies Used
@@ -51,22 +51,21 @@ The program was written in JavaScript, HTML, and CSS.
 ## Usage
 (undone)
 The 3D WebGL Articulated Model was made using an interface whose input and output can be directly done in the browser. The features in the interface include:
-1. Bentuk: to define which object will change/move when another feature in web is used
-2. Select texture map: to change the model's texture into bump, reflective, or custome texture
-3. Select custom texture: to select the type of custom texture
-4. Rotasi -axis: to rotate the object according to the x-axis, y-axis, or z-axis
-5. Translasi: to shift objects left/right/up/down
-6. Scale: to zoom in or zoom out selected object 
-7. Play: to play an animation of the object model
-8. Select projection type: to select the projection type
-9. Camera Angle: to set the horizontal and vertical camera angle
-10. Camera Radius: to zoom in or zoom out the camera view which affects to the size of the objects
-11. Light Position:
-12. Light Shader: to gives color shading to objects
-13. Reset view: to return objects to their default settings
-14. Export: to export file and save it into the computer
-15. Import/Choose File: to import and load file
-16. Help: to see usage guide of the program
+1. Select texture map: to change the model's texture into bump, reflective, or custome texture
+2. Select custom texture: to select the type of custom texture
+3. Rotasi -axis: to rotate the object according to the x-axis, y-axis, or z-axis
+4. Translasi: to shift objects left/right/up/down
+5. Scale: to zoom in or zoom out selected object 
+6. Play: to play an animation of the object model
+7. Select projection type: to select the projection type
+8. Camera Angle: to set the horizontal and vertical camera angle
+9. Camera Radius: to zoom in or zoom out the camera view which affects to the size of the objects
+10. Light Position: to adjust the position of the light for shading feature
+11. Light Shader: to enable color shading to objects
+12. Reset view: to return objects to their default settings
+13. Export: to export file and save it into the computer
+14. Import/Choose File: to import and load file
+15. Help: to see usage guide of the program
 
 
 ## Project Status
