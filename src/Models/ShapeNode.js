@@ -12,7 +12,7 @@ class ShapeNode {
         this.pivotRotate = obj.pivotRotate;
         this.pivotScale = obj.pivotScale;
         this.texture = obj.texture;
-        this.textureIndex = 0;
+        this.textureIndex = obj.textureIndex? obj.textureIndex : 0;
 
         this.animation = [];
         this.loadAnimationFrames(obj.animation);
